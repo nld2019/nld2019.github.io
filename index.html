@@ -204,6 +204,66 @@
 <h3 id="802-11e-2005"><a href="#802-11e-2005" class="headerlink" title="802.11e-2005"></a>802.11e-2005</h3><p>由于原始标准没有为使用Wi-Fi语音等时敏应用定义合乎要求的服务质量(QoS)规程。语音、视频、音频等应用要求较低<br>的延迟和抖动，其传输的优先级高于标准的数据应用流量。802.11e修正案定义了二层MAC机制，以满足无线局域网对时<br>敏应用的QoS要求。</p>
 <p>802.11原始标准定义了两种方法，以便802.11无线接口卡获取半双工介质的控制权。分布式协调功能(DCF)是默认方法，这种<br>基于争用的方法用于确定接下来使用无线介质进行传输的设备。为了满足Qos要求，混合协调功能(HCF)引入，增强型分布式<br>信道访问(EDCA)是对DCF的扩展，这种介质访问方法根据上层协议提供“帧优先”，以满足必要的延迟要求。</p>
 <p>Wi-Fi联盟有一项名为Wi-Fi多媒体(WMM)的认证项目。这项认证定义了802.11e修正案的许多要素，并根据重要性将流量<br>优先级划分为4个访问类别。</p>
+<h3 id="802-11g-2003"><a href="#802-11g-2003" class="headerlink" title="802.11g-2003"></a>802.11g-2003</h3><p>是一项引起轰动的修正案，无线接口采用称为扩展速率物理层的新技术，并仍然可以使用2.4GHz ISM频段。</p>
+<p>定义了两种强制和两种可选的物理层<br>为了获取更高的数据速率，设备必须支持称为扩展速率物理层-正交频分复用(ERP-OFDM)的物理层技术，支持6，9，12，18，<br>24，36，48，54Mbps等多种速率。</p>
+<p>为了向后兼容802.11 DSSS与802.11b网络，设备必须支持称为扩展速率物理层-直接序列扩频/补码键控(ERP-DSSS/CCK)的物<br>理层技术。</p>
+<p>802.11修正案的比较</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">802.11遗留</th>
+<th align="center">802.11b</th>
+<th align="center">802.11g</th>
+<th align="center">802.11a</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">工作频段</td>
+<td align="center">2.4GHz ISM</td>
+<td align="center">2.4GHz ISM</td>
+<td align="center">2.4GHz ISM</td>
+<td align="center">5GHz U-NII-1,U-NII-2,U-NII-3</td>
+</tr>
+<tr>
+<td align="center">扩频技术</td>
+<td align="center">FHSS或DSSS</td>
+<td align="center">HR-DSSS</td>
+<td align="center">ERP:强制支持ERP-OFDM与ERP-DSSS/CCK</td>
+<td align="center">OFDM</td>
+</tr>
+<tr>
+<td align="center">数据速率</td>
+<td align="center">1或2Mbps</td>
+<td align="center">DSSS:1 or 2Mbps/HR-DSSS: 5.5or 11Mbps</td>
+<td align="center">ERP-DSS/CCK:1,2,5.5,11Mbps/ERP-OFDM:强制支持6,12,24Mbs,可选支持9,18,36,48,54Mbps</td>
+<td align="center">强制支持6,12,24Mbps,可选支持9,18,36,48,54Mbps</td>
+</tr>
+<tr>
+<td align="center">向后兼容</td>
+<td align="center">不适用</td>
+<td align="center">仅802.11 DSSS</td>
+<td align="center">802.11b HR-DSSS和802.11DSSS</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">获批时间</td>
+<td align="center">1997年</td>
+<td align="center">1999年</td>
+<td align="center">2003年</td>
+<td align="center">1999年</td>
+</tr>
+</tbody></table>
+<h3 id="802-11h-2003"><a href="#802-11h-2003" class="headerlink" title="802.11h-2003"></a>802.11h-2003</h3><p>定义了动态频率选择(DFS)和发射功率控制(TPC)机制。初衷是为了满足欧洲对于5GHz频段通信的监管要求，以及检测和<br>避免对5GHz卫星和雷达系统的干扰。</p>
+<p>802.11h还定义了一个新的频段,UNII-2扩展(UNII-2 Extended)频段。属于802.11a频段的延申。</p>
+<p>DFS本质上属于雷达检测和雷达干扰回避技术，提供以下功能。</p>
+<blockquote>
+<p>接入点根据支持的信道，允许客户端进行关联。如果客户端成为接入点所在的无线网络的成员，称二者建立关联。<br>接入点可以将信道禁声以测试是否存在雷达传输。<br>在使用信道之前，接入点可以测试信道是否存在雷达传输。<br>接入点可以检测当前信道和其他信道是否存在雷达传输。<br>如果检测到雷达传输，接入点将停止操作以避免干扰。<br>检测到干扰时，接入点可以选择不同的信道进行传输，并通知所有关联到自己的客户端。</p>
+</blockquote>
+<p>TPC致力于满足有关传输功率的监管要求，提供以下功能。</p>
+<blockquote>
+<p>客户端可以根据发射功率与接入点建立关连。<br>如果法规允许，接入点和客户端遵守信道的最大发射功率电平。<br>接入点可以指定某个或所有关联到自己的客户端使用的发射功率。<br>接入点可以根据实际的射频环境参数（如路径损耗）调整客户端的传输功率。</p>
+</blockquote>
 <p>(未完待续…)</p>
 
       
