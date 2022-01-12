@@ -179,7 +179,7 @@
 <blockquote>
 <p>每3dB增益（相对值），意味着绝对功率(mW)加倍；<br>每3dB损耗（相对值），意味着绝对功率(mW)减半；<br>每10dB增益，意味着绝对功率乘以10；<br>每10dB损耗，意味着绝对功率除以10；</p>
 </blockquote>
-<p>毫瓦分贝对照表</p>
+<p>多数802.11无线接口可以解析从-30dBm(1mW 的千分之一)到低至-100dBm(1mW的百亿分之一)的接收信号<br>毫瓦分贝对照表</p>
 <div class="table-container">
 <table>
 <thead>
@@ -214,6 +214,11 @@
 <td style="text-align:center">-20dBm</td>
 <td style="text-align:center">0.01mW</td>
 <td style="text-align:center">百分之一毫瓦</td>
+</tr>
+<tr>
+<td style="text-align:center">-30dBm</td>
+<td style="text-align:center">0.001mW</td>
+<td style="text-align:center">千分之一毫瓦</td>
 </tr>
 </tbody>
 </table>
@@ -1696,22 +1701,5 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 </body>
 </html>
