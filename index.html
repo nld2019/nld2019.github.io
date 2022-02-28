@@ -200,7 +200,7 @@
 <li>每位用户有一把不同且唯一的密钥。</li>
 </ol>
 <p><strong>四次握手</strong></p>
-<p>请求方————————————————————————————————认证方<br>PMK已知                                                               PMK已知<br>生成SNonce                                                            生成ANonce<br>Message 1: EAPOL-Key(ANonce, Unicast)&lt;—————————————————<br>派生PTK<br>Message 2: EAPOL-Key(SNonce, Unicast, MIC)——————————————-&gt;<br>                                                               派生PTK，如果需要则生成GTK<br>Message 3: EAPOL-Key(Install PTK, Unicast, MIC, Encrypted GTK)&lt;————-<br>Message 4: EAPL-Key(Unicast, MIC)———————————————————&gt;<br>安装PTK和GTK                                                    安装PTK</p>
+<p>请求方————————————————————————————————认证方<br>PMK已知———————————————————————————————-PMK已知<br>生成SNonce——————————————————————————————生成ANonce<br>Message 1: EAPOL-Key(ANonce, Unicast)&lt;—————————————————<br>派生PTK<br>Message 2: EAPOL-Key(SNonce, Unicast, MIC)——————————————-&gt;<br>———————————————————————————————————派生PTK，如果需要则生成GTK<br>Message 3: EAPOL-Key(Install PTK, Unicast, MIC, Encrypted GTK)&lt;————-<br>Message 4: EAPL-Key(Unicast, MIC)———————————————————&gt;<br>安装PTK和GTK—————————————————————————————-安装PTK</p>
 <p>最终的密钥为成对瞬时密钥（PTK）和组临时密钥（GTK）。PTK用于加密解密单播流量；GTK用于加密解密广播和多播流量。</p>
 <p>TKIP加密是正对WEP的加强版；CCMP加密优于TKIP；GCMP是更新的加密方式，无法向后兼容，接入点和客户端需要升级硬件。</p>
 
