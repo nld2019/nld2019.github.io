@@ -146,6 +146,87 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GIT-delete-history-commit" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/25/GIT-delete-history-commit/">GIT:delete history commit.</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/25/GIT-delete-history-commit/" class="archive-article-date">
+  	<time datetime="2022-03-25T15:40:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-25</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Follow the below steps to complete this task.<br>[Warning]: This will remove your old commit history completely, You can’t recover it again.</p>
+<p>1，Create Orphan Branch – Create a new orphan branch in git repository. The newly created branch will not show in ‘git branch’ command.<br>git checkout —orphan temp_branch</p>
+<p>2，Add Files to Branch – Now add all files to newly created branch and commit them using following commands.<br>git add -A<br>git commit -am “the first commit”</p>
+<p>3，Delete master Branch – Now you can delete the master branch from your git repository.<br>git branch -D master</p>
+<p>4，Rename Current Branch – After deleting the master branch, let’s rename newly created branch name to master.<br>git branch -m master</p>
+<p>5，Push Changes – You have completed the changes to your local git repository. Finally, push your changes to remote (Github) repository forcefully.<br>git push -f origin master</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">git skills</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/25/GIT-delete-history-commit/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1302,97 +1383,6 @@
 
 
   
-    <article id="post-CWNA-MIMO技术：高吞吐量与甚高吞吐量-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/22/CWNA-MIMO%E6%8A%80%E6%9C%AF%EF%BC%9A%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F%E4%B8%8E%E7%94%9A%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F-%E4%BA%8C/">CWNA:MIMO技术：高吞吐量与甚高吞吐量(二)</a>
-    </h1>
-  
-
-        
-        <a href="/2022/02/22/CWNA-MIMO%E6%8A%80%E6%9C%AF%EF%BC%9A%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F%E4%B8%8E%E7%94%9A%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F-%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2022-02-22T01:45:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-22</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="信道"><a href="#信道" class="headerlink" title="信道"></a>信道</h3><p><strong>20MHz 信道</strong><br>802.11 a/g无线接口使用20MHz OFDM信道。由64个副载波构成，其中48个传输数据，4个作为导频载波用于发射机和接收机之间动态校准，其他12个没有使用。<br>802.11 n HT 和802.11ac VHT无线接口同样采用OFDM技术，但增加了4个副载波传输数据，更有效的利用了频谱。</p>
-<p><strong>40MHz信道</strong><br>802.11n HT 和 802.11ac VHT 无线接口也可以使用40MHz OFDM信道。每条40MHz信道由128个副载波构成，其中108个副载波传输数据，6个副载波作为导频波，<br>用于发射机和接收机之间动态校准，其他副载波没有使用。</p>
-<p>40MHz信道实际上是由两个相邻20MHz信道绑定构成。它分为主信道和辅信道。</p>
-<p>2.4GHz频段只有一条40MHz信道可供使用，根本无法规划信道复用模式。</p>
-<p><strong>40MHz不兼容</strong><br>用于防止2.4GHz频段使用到40MHz信道干扰到2.4GHz 20MHz信道。</p>
-<p><strong>80MHz与160MHz信道</strong><br>80MHz是由4条20MHz信道绑定而成。<br>160MHz是由2条80MHz信道绑定而成，两条80MHz信道不必相邻。如果相邻，则构成160MHz信道，如果不相邻，则构成80+80MHz信道。<br>他们能提供更高的吞吐量。</p>
-<h3 id="保护间隔"><a href="#保护间隔" class="headerlink" title="保护间隔"></a>保护间隔</h3><p>信号沿着不同路径传输导致到达接收机的时间不同，引起符号间干扰。保护间隔用于补偿时延扩展和避免符号间干扰。</p>
-<p>HT/VHT技术引入400ns的保护间隔，称为短保护间隔。信号好的情况下，使用400ns的短保护间隔比使用800ns的保护间隔，数据速率可以提供10%左右。</p>
-<h3 id="256-QAM"><a href="#256-QAM" class="headerlink" title="256-QAM"></a>256-QAM</h3><p>随着时间的推移，802.11物理层技术不断发展出更新、更快的调制方法。每一种更新、更快的物理层都会定义能编码更多比特的调制方法，网络的速度和性能随之提高。<br>但是，早期较慢的传输和调制方法并未因新技术的出现而弃之不用。<br>当客户端远离接入点且信号电平下降时，将通过动态速率切换技术转换到较低的数据速率，以保持连接不会中断。</p>
-<p>无线局域网主要的调制方法：</p>
-<blockquote>
-<p>DBPSK （差分二进制相移键控）<br>DQPSK<br>BPSK<br>QPSK   （正交相移键控）<br>16-QAM<br>64-QAM<br>256-QAM （256-正交调幅）</p>
-</blockquote>
-<p>256-QAM 通过16种不同级别的相移和16种不同级别的幅移传输编码。</p>
-<p>相较于64-QAM，802.11ac接收机需要大约5dB的额外增益以保证性能。</p>
-<p>调制方式越高级，吞吐量越高，但是对环境的要求也越苛刻。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/22/CWNA-MIMO%E6%8A%80%E6%9C%AF%EF%BC%9A%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F%E4%B8%8E%E7%94%9A%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F-%E4%BA%8C/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1525,6 +1515,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Wi-Fi</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">git skills</a>
               </li>
              
               <li class="article-tag-list-item">
