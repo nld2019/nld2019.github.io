@@ -146,6 +146,205 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CWNA-802-11-MAC-体系结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/02/14/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">CWNA:802.11 MAC 体系结构</a>
+    </h1>
+  
+
+        
+        <a href="/2022/02/14/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="archive-article-date">
+  	<time datetime="2022-02-14T07:25:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-14</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>包、帧与比特<br>数据链路层</p>
+<blockquote>
+<p>MAC服务数据单元<br>MAC协议数据单元 </p>
+</blockquote>
+<p>物理层</p>
+<blockquote>
+<p>PLCP服务数据单元<br>PLCP协议数据单元</p>
+</blockquote>
+<p>802.11与802.3互操作性<br>802.11 MAC 帧头</p>
+<blockquote>
+<p>帧控制字段<br>持续时间/ID字段<br>MAC寻址<br>序列控制字段<br>QoS控制字段<br>HT控制字段</p>
+</blockquote>
+<p>802.11帧体<br>802.11帧尾<br>802.11状态机<br>管理帧</p>
+<blockquote>
+<p>信标帧<br>身份验证帧<br>关联帧<br>重关联帧<br>取消关联帧<br>接触身份验证帧<br>行动帧</p>
+</blockquote>
+<p>控制帧</p>
+<blockquote>
+<p>确认帧<br>块确认帧<br>节电轮询帧<br>RTS/CTS<br>CTS-to-Self<br>保护机制</p>
+</blockquote>
+<p>数据帧</p>
+<blockquote>
+<p>Qos数据帧与非Qos数据帧<br>不携带数据的数据帧</p>
+</blockquote>
+<p>电源管理</p>
+<blockquote>
+<p>遗留的电源管理机制<br>WMM节电与非调度自动节电传输<br>MIMO电源管理机制</p>
+</blockquote>
+<h3 id="包、帧与比特"><a href="#包、帧与比特" class="headerlink" title="包、帧与比特"></a>包、帧与比特</h3><p>对于802.11通信而言，主要目标就是在计算机设备之间传输用户数据。<br>当数据在计算机中处理完毕并准备从一台计算机发送到另一台计算机时，数据从OSI模型的上层向下传递至物理层，最终经由物理层传输给其他设备。<br>网络三层数据称为包<br>网络二层数据称为帧<br>物理层数据称为比特，数据最终以单比特的形式传输。比特是值为0或1的二进制数字，二进制数字是数字通信的基础。</p>
+<h3 id="数据链路层（网络二层）"><a href="#数据链路层（网络二层）" class="headerlink" title="数据链路层（网络二层）"></a>数据链路层（网络二层）</h3><p>包含两个子层：<br>802.2逻辑链路控制子层（LLC),所有802网络具有相同的LLC子层结构；<br>介质访问子层（MAC子层）， 802.11无线局域网通信位于MAC子层。</p>
+<p><strong>MAC服务数据单元</strong><br>网络层将数据发送给数据链路层，数据在LLC子层后称为MAC服务数据单元（MSDU), 它有LLC子层以及第三~第七层信息构成。<br>802.11有3种主要的帧类型。<br>802.11管理帧和控制帧 不携带上层信息，<br>802.11数据帧携带MSDU净荷。</p>
+<p>MSDU最大长度为2304字节，帧体的最大长度有MSDU最大长度与加密开销决定。</p>
+<p>2009年获批的802.11n引入 聚合MAC服务数据单元（A-MSDU)的概念。 A-MSDU最大长度（3839或7935）</p>
+<p><strong>MAC协议数据单元</strong><br>LLC子层向MAC子层发送MSDU时，将添加MAC帧头信息，封装后的MSDU称为MAC协议数据单元（MPDU），也就是802.11帧。</p>
+<p>MPDU = MAC帧头 + 帧体 + 帧校验序列<br>MAC帧头： 帧控制、持续时间、MAC寻址、序列控制、Qos控制、HT控制等信息。<br>帧头： MSDU净荷在其中<br>帧校验序列： FCS包括32为循环容易校验，用于验证帧的完整性。</p>
+<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>分为两个子层：<br>物理层会聚过程子层（PLCP）<br>物理介质相关子层（PMD）</p>
+<p>MAC子层向 PLCP子层发送帧， PLCP子层创建 PLCP协议数据单元（PPDU）以便传输，PMD子层随后会调制数据并以比特形式发送出去。</p>
+<p><strong>PLCP服务数据单元</strong><br>PLCP服务数据单元（PSDU）是物理层对MPDU的称谓。</p>
+<p><strong>PLCP协议数据单元</strong><br>PPDU = 前同步码 + 物理层头部 + PSDU</p>
+<p>信息在各层之间流动的过程</p>
+<p>网络层（网络三层）<br>——————————————————————————————————————————————————————————————————————————————————————<br>数据链路层（第二层） LLC子层——————MSDU（第三~第七层数据）————————LLC子层</p>
+<p>————————— MAC子层——————MSDU封装在MPDU中———————————MAC子层<br>——————————————————-添加或删除MAC帧头与帧尾<br>——————————————————————————————————————————————————————————————————————————————————————<br>物理层（第一层）—- PLCP子层—————-PSDU封装在 PPDU中——————————-PLCP子层<br>————————————————-添加或删除前同步码与物理层头部<br>————————— PMD子层—————-数据以比特形式传输———————————PMD子层</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/02/14/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-CWNA-802-11介质访问（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/02/14/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%EF%BC%88%E4%BA%8C%EF%BC%89/">CWNA:802.11介质访问（二）</a>
+    </h1>
+  
+
+        
+        <a href="/2022/02/14/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2022-02-14T02:00:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-14</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="点协调功能"><a href="#点协调功能" class="headerlink" title="点协调功能"></a>点协调功能</h3><p>PCF是一种可选的介质访问方法，IEEE认为PCF已经过时，可能今后会将其删除。</p>
+<h3 id="混合协调功能"><a href="#混合协调功能" class="headerlink" title="混合协调功能"></a>混合协调功能</h3><p>定义服务质量的802.11e增加了混合协调功能。<br>HCF将DCF和PCF功能相结合并加以改进，定义了两种信道访问方法：增强型分布式信道访问（EDCA）和HCF受控信道访问（HCCA)<br>前面的DCF和PCF介质争用机制只允许802.11无线接口传输单个帧。<br>HCF定义的机制允许802.11无线接口通过射频介质传输多个帧。当兼容HCF的无线接口争用介质时，无线接口将获得帧发送时间，这段时间称为发送机会（TXOP）。<br>在此期间，802.11无线接口可以通过帧突发（frame burst)发送多个帧，帧之间通过SIFS隔开，以确保其他无线接口不会在帧突发期间占用介质。</p>
+<p><strong>增强型分布式信道访问</strong><br>提供差异化访问的无线介质访问方法，能将流量定向到4种访问类别的QoS优先级队列。优先级标记提供了在MAC子层实现QoS的机制。<br>EDMAC基于8个用户优先级字段定义了4种访问类别，优先级从低到高：<br>AC_BK(背景)<br>AC_BE（尽力而为)<br>AC_VI(视频)<br>AC_VO(语音)</p>
+<p>每种访问类别经过改进的增强型分布式信道访问功能争用介质。拥有高优先级的帧具有最小退避值，因此机会更多。</p>
+<p><strong>HCF受控信道访问</strong><br>内置在接入点中，具有更高的无线介质访问优先级。</p>
+<h3 id="Wi-Fi-多媒体"><a href="#Wi-Fi-多媒体" class="headerlink" title="Wi-Fi 多媒体"></a>Wi-Fi 多媒体</h3><p>语音，音频，视频等应用流量对延迟和抖动的容忍度较低，需要比标准数据流量更高的优先级。<br>WMM基于EDCA机制，因此以太网的802.1D优先级标记用于将流量定向到4种访问类别的优先级队列。</p>
+<h3 id="占用时长公平性"><a href="#占用时长公平性" class="headerlink" title="占用时长公平性"></a>占用时长公平性</h3><p>由于存在高速设备和低速设备争用无线介质会导致低速设备占用较多传输时长，<br>占用时长公平性，使得高数设备和低速设备有均等的时长，而非均等的机会。这样高速设备能够更多机会访问介质，最终提升无线局域网的性能、容量和吞吐量。<br>它致力于避免速度较慢设备影响网络的整体性能。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/02/14/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%EF%BC%88%E4%BA%8C%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-CWNA-802-11介质访问" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1175,249 +1374,9 @@
 
 
   
-    <article id="post-CWNA-射频数学计算" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/01/12/CWNA-%E5%B0%84%E9%A2%91%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97/">CWNA:射频数学计算</a>
-    </h1>
-  
-
-        
-        <a href="/2022/01/12/CWNA-%E5%B0%84%E9%A2%91%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97/" class="archive-article-date">
-  	<time datetime="2022-01-12T01:32:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-12</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>射频计算中包含很多对数运算，不过工程应用无需进行复杂的计算。</p>
-<p><strong>10与3规则</strong><br>用于工程近似计算。<br>4条规则：</p>
-<blockquote>
-<p>每3dB增益（相对值），意味着绝对功率(mW)加倍；<br>每3dB损耗（相对值），意味着绝对功率(mW)减半；<br>每10dB增益，意味着绝对功率乘以10；<br>每10dB损耗，意味着绝对功率除以10；</p>
-</blockquote>
-<p>多数802.11无线接口可以解析从-30dBm(1mW 的千分之一)到低至-100dBm(1mW的百亿分之一)的接收信号<br>毫瓦分贝对照表</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">毫瓦分贝(dBm)</th>
-<th style="text-align:center">毫瓦(mW)</th>
-<th style="text-align:center">功率电平</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">+20dBm</td>
-<td style="text-align:center">200mW</td>
-<td style="text-align:center">十分之一瓦</td>
-</tr>
-<tr>
-<td style="text-align:center">+10dBm</td>
-<td style="text-align:center">100mW</td>
-<td style="text-align:center">百分之一瓦</td>
-</tr>
-<tr>
-<td style="text-align:center">0dBm</td>
-<td style="text-align:center">1mW</td>
-<td style="text-align:center">千分之一瓦</td>
-</tr>
-<tr>
-<td style="text-align:center">-10dBm</td>
-<td style="text-align:center">0.1mW</td>
-<td style="text-align:center">十分之一毫瓦</td>
-</tr>
-<tr>
-<td style="text-align:center">-20dBm</td>
-<td style="text-align:center">0.01mW</td>
-<td style="text-align:center">百分之一毫瓦</td>
-</tr>
-<tr>
-<td style="text-align:center">-30dBm</td>
-<td style="text-align:center">0.001mW</td>
-<td style="text-align:center">千分之一毫瓦</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/01/12/CWNA-%E5%B0%84%E9%A2%91%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CWNA：射频组件、度量与数学计算" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/01/11/CWNA%EF%BC%9A%E5%B0%84%E9%A2%91%E7%BB%84%E4%BB%B6%E3%80%81%E5%BA%A6%E9%87%8F%E4%B8%8E%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97/">CWNA：射频组件、度量与数学计算</a>
-    </h1>
-  
-
-        
-        <a href="/2022/01/11/CWNA%EF%BC%9A%E5%B0%84%E9%A2%91%E7%BB%84%E4%BB%B6%E3%80%81%E5%BA%A6%E9%87%8F%E4%B8%8E%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97/" class="archive-article-date">
-  	<time datetime="2022-01-11T06:47:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-11</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>射频组件</p>
-<blockquote>
-<p>发射机<br>天线<br>接收机<br>有意辐射器<br>等效全向辐射功率</p>
-</blockquote>
-<p>功率单位与比较单位</p>
-<blockquote>
-<p>瓦特<br>毫瓦<br>分贝<br>各向同性分贝<br>偶极子分贝<br>毫瓦分贝<br>平方反比定律</p>
-</blockquote>
-<p>射频数学计算</p>
-<blockquote>
-<p>10与3规则<br>射频数学计算小结</p>
-</blockquote>
-<p>本地噪声<br>信噪比<br>信干比<br>接收信号强度指示<br>链路预算<br>衰落裕度/系统运行裕度</p>
-<p>通信的三项基本要求：</p>
-<blockquote>
-<p>两台或多台设备要求通信<br>必须存在某种通信介质、手段或方法<br>必须遵守一系列通信规则</p>
-</blockquote>
-<h3 id="射频组件"><a href="#射频组件" class="headerlink" title="射频组件"></a>射频组件</h3><p><strong>发射机</strong><br>计算机将数据传送给发射机，由发射机启动射频通信过程。</p>
-<p><strong>天线</strong><br>通信系统中天线具备两种功能。<br>与发射机相连，天线收集发射机传送的交流信号，并以特定于天线类型的模式将射频波引导或辐射出去。<br>与接收机相连，天线捕捉空中的射频波，并以交流信号引导至接收机，在由接收机转换为比特和字节。</p>
-<p>增加天线功率输出的两种方法：<br>增加发射机的输出功率<br>引导或聚焦天线辐射出去的射频信号。</p>
-<p><strong>接收机</strong><br>接收机获取天线收到的载波信号，并将已调信号转换为1和0，然后将数据交由计算机处理。</p>
-<p><strong>有意辐射器</strong><br>发射机与天线之间的任何设备构成。IR的功率在提供天线输入的连接器处测定。</p>
-<p><strong>等效全向辐射功率</strong><br>特定天线辐射出去的最大射频信号的强度。</p>
-<h3 id="功率单位与比较单位"><a href="#功率单位与比较单位" class="headerlink" title="功率单位与比较单位"></a>功率单位与比较单位</h3><p>覆盖和性能是802.11无线网络设计中的两个重要因素，切实掌握射频功率、比较单位与射频数学计算对于网络设计大有裨益。<br>功率单位（绝对值）</p>
-<blockquote>
-<p>瓦特(W)<br>毫瓦(mW)<br>毫瓦分贝(dBm)</p>
-</blockquote>
-<p>比较单位(相对值)</p>
-<blockquote>
-<p>分贝(dB)<br>各向同性分贝(dBi)<br>偶极子分贝(dBd)</p>
-</blockquote>
-<p><strong>瓦特</strong><br>瓦特(W)是基本的功率单位，得名于18世纪的苏格兰发明家詹姆斯·瓦特。<br><strong>毫瓦</strong><br>千分之一瓦。<br>多数市内802.11设备的发射功率介于1mW和100mW之间。</p>
-<p><strong>分贝</strong><br>分贝是比较单位而非功率单位，用于描述两个值之间的差异。<br>$ B = log10(P1/P2) $<br>$ dB = 10log10(P1/P2) $</p>
-<p>由于分贝在描述信号衰减和增益的时候比瓦特和毫瓦方便很多，因而广泛采用分贝描述。</p>
-<p><strong>各向同性分贝</strong><br>与各项同性辐射器产生的功率相比，天线的功率增益称为各项同性分贝(dBi)<br>dBi是天线增益的度量。</p>
-<p><strong>偶极子分贝</strong><br>dBd描述某幅天线相对于偶极子天线信号的增益。</p>
-<p><strong>毫瓦分贝</strong><br>dBm描述相对于1mW的分贝。<br>$0dBm = 1mW$<br>$20dBm = 100mW$</p>
-<p>由于自由空间路径损耗的影响，接收信号总是低于1mW. 即便极强的接收信号，功率也只有-40dBm,也就是0.0001mW(1mW的万分之一)<br>大多数无线接口可以解析从-30dBm ~ -100dBm的接收信号。</p>
-<p><strong>平方反比定律</strong><br>功率变化与距离变化的平方成反比。</p>
-<script type="math/tex; mode=display">自由空间路径损耗 = 36.6 + 20xlog10(f) + 20xlog10(d)</script><p>从该公式可知，距离越远损耗越大，频率越高损耗越大。</p>
-<p>（未完待续…)</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/01/11/CWNA%EF%BC%9A%E5%B0%84%E9%A2%91%E7%BB%84%E4%BB%B6%E3%80%81%E5%BA%A6%E9%87%8F%E4%B8%8E%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1559,6 +1518,14 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">code analysis; Wi-Fi; Driver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">code analysis, Wi-Fi, Driver;</a>
               </li>
             
             <div class="clearfix"></div>
