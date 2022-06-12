@@ -146,6 +146,82 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-tmux-conf" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/12/tmux-conf/">tmux.conf</a>
+    </h1>
+  
+
+        
+        <a href="/2022/06/12/tmux-conf/" class="archive-article-date">
+  	<time datetime="2022-06-12T07:07:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>// # ~/.tmux.conf<br>//<br>// # unbind default prefix and set it to ctrl-a<br>// unbind C-b<br>// set -g prefix C-a<br>// bind C-a send-prefix<br>//<br>// # make delay shorter<br>// set -sg escape-time 0<br>//<br>//<br>//<br>// #### key bindings ####<br>//<br>// # reload config file<br>// bind r source-file ~/.tmux.conf \; display “.tmux.conf reloaded!”<br>//<br>// # quickly open a new window<br>// bind N new-window<br>//<br>// # synchronize all panes in a window<br>// bind y setw synchronize-panes<br>//<br>// # pane movement shortcuts (same as vim)<br>// bind h select-pane -L<br>// bind j select-pane -D<br>// bind k select-pane -U<br>// bind l select-pane -R<br>//<br>// #### copy mode : vim ####<br>//<br>// # set vi mode for copy mode<br>// setw -g mode-keys vi<br>//<br>// # copy mode using ‘Esc’<br>// unbind [<br>// bind Escape copy-mode<br>//<br>// # select and copy<br>// bind-key -T copy-mode-vi v send-keys -X begin-selection<br>// bind-key -T copy-mode-vi y send-keys -X rectangle-toggle<br>//<br>// # paste using ‘p’<br>// unbind p<br>// bind p paste-buffer</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Misc</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/12/tmux-conf/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-CODE-ANALYSIS-9-data-tx-process" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1221,89 +1297,6 @@ wlan_sdio_dnld_fw(pmlan_adapter pmadapter, pmlan_fw_image pmfw)
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CODE-ANALYSIS-1-module-init-process" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/">CODE-ANALYSIS:1-module-init-process</a>
-    </h1>
-  
-
-        
-        <a href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/" class="archive-article-date">
-  	<time datetime="2022-06-11T15:37:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2022/06/03</p>
-<p>// driver code enter point<br>module_init(woal_init_module);</p>
-<p>init card adapter card, maximum support is 4</p>
-<p>init proc and crate proc/mwlan  wifi_status</p>
-<p>init FW hang work queue.</p>
-<p>init hang work to process FW hang</p>
-<p>init register work queue</p>
-<p>init register work to process bus driver register.<br>queue_work register work to register work queue.</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/">展开全文 >></a>
         </p>
       
 
