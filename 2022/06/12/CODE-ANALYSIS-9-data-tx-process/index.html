@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | Hexo</title>
+  <title>CODE-ANALYSIS:9-data-tx-process | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="Sun Jun  5 12:16:54 CST 2022 mlan_statuswoal_init_sta_dev(struct net_device dev, moal_private priv)    dev-&gt;netdev_ops &#x3D; &amp;woal_netdev_ops; &#x2F;&#x2F; upper layer send the data by ndo_start_xmit &#x2F;* Netw">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CODE-ANALYSIS:9-data-tx-process">
+<meta property="og:url" content="http://example.com/2022/06/12/CODE-ANALYSIS-9-data-tx-process/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Sun Jun  5 12:16:54 CST 2022 mlan_statuswoal_init_sta_dev(struct net_device dev, moal_private priv)    dev-&gt;netdev_ops &#x3D; &amp;woal_netdev_ops; &#x2F;&#x2F; upper layer send the data by ndo_start_xmit &#x2F;* Netw">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-06-12T06:25:54.000Z">
+<meta property="article:modified_time" content="2022-06-12T06:26:44.151Z">
 <meta property="article:author" content="L.D.2021">
+<meta property="article:tag" content="code analysis, Wi-Fi, Driver;">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -144,38 +149,91 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-CODE-ANALYSIS-9-data-tx-process" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      CODE-ANALYSIS:9-data-tx-process
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-9-data-tx-process/" class="archive-article-date">
+
+        
+        <a href="/2022/06/12/CODE-ANALYSIS-9-data-tx-process/" class="archive-article-date">
   	<time datetime="2022-06-12T06:25:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
 </a>
  
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Sun Jun  5 12:16:54 CST 2022</p>
+<p>mlan_status<br>woal_init_sta_dev(struct net_device <em>dev, moal_private </em>priv)<br>    dev-&gt;netdev_ops = &amp;woal_netdev_ops;</p>
+<p>// upper layer send the data by ndo_start_xmit</p>
+<p>/<em>* Network device handlers </em>/<br>const struct net_device_ops woal_netdev_ops = {<br>    .ndo_open = woal_open,<br>        .ndo_start_xmit = woal_hard_start_xmit,</p>
+<p>// this function handles packet transmission<br>netdev_tx_t<br>woal_hard_start_xmit(struct sk_buff <em> skb, struct net_device </em> dev)</p>
+<pre><code>   woal_start_xmit(priv, skb);
+</code></pre><p> static int<br> woal_start_xmit(moal_private <em>priv, struct sk_buff </em>skb)</p>
+<p> // tcp enhance function<br>     if (priv-&gt;enable_tcp_ack_enh == MTRUE) {<br>            ret = woal_process_tcp_ack(priv, pmbuf);</p>
+<pre><code>index = skb_get_queue_mapping(skb);
+    status = mlan_send_packet(priv-&gt;phandle-&gt;pmlan_adapter, pmbuf);
+</code></pre><p>// function to send packet<br>mlan_status<br>mlan_send_packet(t_void *padapter, pmlan_buffer pmbuf)</p>
+<pre><code>           wlan_add_buf_bypass_txqueue(pmadapter, pmbuf);
+
+        or
+
+        /* Transmit the packet */
+        wlan_wmm_add_buf_txqueue(pmadapter, pmbuf);
+</code></pre><p>// The main process<br>mlan_status<br>mlan_main_process(t_void *padapter)</p>
+<pre><code>        wlan_wmm_process_tx(pmadapter);
+</code></pre><p>// Transmit the highest priority packet awaiting in the WMM Queues<br>void<br>wlan_wmm_process_tx(pmlan_adapter pmadapter)</p>
+<pre><code>    if (wlan_dequeue_tx_packet(pmadapter))
+                break;
+</code></pre><p>// dequeue a packet<br>static int<br>wlan_dequeue_tx_packet(pmlan_adapter pmadapter)</p>
+<pre><code> wlan_11n_aggregate_pkt(priv, ptr, priv-&gt;intf_hr_len,
+                            ptrindex);
+</code></pre><p>pmbuf_src =<br>        (pmlan_buffer)util_dequeue_list(pmadapter-&gt;pmoal_handle,<br>                        &amp;pra_list-&gt;buf_head,<br>                        MNULL, MNULL);</p>
+<pre><code>        ret = pmadapter-&gt;ops.host_to_card(priv, MLAN_TYPE_DATA,
+                                  pmbuf_aggr, &amp;tx_param);
+</code></pre><p>// after this I am reading the Wi-Fi subsystem Linux porting guide</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-9-data-tx-process/">CODE-ANALYSIS:9-data-tx-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -187,382 +245,105 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/12/CODE-ANALYSIS-9-data-tx-process/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-8-data-rx-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:24:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
 
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2022/06/12/CODE-ANALYSIS-8-data-rx-process/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CODE-ANALYSIS:8-data-rx-process</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-8-data-rx-process/">CODE-ANALYSIS:8-data-rx-process</a>
-    </h1>
-  
+        
+        
+    </div>
+</aside>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-7-get-connection-info/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:23:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-7-get-connection-info/">CODE-ANALYSIS:7-get-connection-info</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-6-disconnect-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:22:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-6-disconnect-process/">CODE-ANALYSIS:6-disconnect-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-5-connect-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:21:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-5-connect-process/">CODE-ANALYSIS:5-connect-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-5-connect-process-hostmlme/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:19:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-5-connect-process-hostmlme/">CODE-ANALYSIS:5-connect-process-hostmlme</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-4-scan-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:17:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-4-scan-process/">CODE-ANALYSIS:4-scan-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-3-fw-init/" class="archive-article-date">
-  	<time datetime="2022-06-11T16:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-3-fw-init/">CODE-ANALYSIS:3-fw-init</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/" class="archive-article-date">
-  	<time datetime="2022-06-11T16:00:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/">CODE-ANALYSIS:2-bus-driver-register</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/" class="archive-article-date">
-  	<time datetime="2022-06-11T15:37:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/">CODE-ANALYSIS:1-module-init-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -599,8 +380,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

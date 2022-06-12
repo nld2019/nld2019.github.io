@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | Hexo</title>
+  <title>CODE-ANALYSIS:4-scan-process | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="Fri Jun  3 20:55:15 CST 2022 &#x2F;&#x2F; driver scan process. &#x2F;* cfg80211 operations &#x2F;static struct cfg80211_ops woal_cfg80211_ops &#x3D; {        .change_virtual_intf &#x3D; woal_cfg80211_change_virtual_intf,        .s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CODE-ANALYSIS:4-scan-process">
+<meta property="og:url" content="http://example.com/2022/06/12/CODE-ANALYSIS-4-scan-process/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Fri Jun  3 20:55:15 CST 2022 &#x2F;&#x2F; driver scan process. &#x2F;* cfg80211 operations &#x2F;static struct cfg80211_ops woal_cfg80211_ops &#x3D; {        .change_virtual_intf &#x3D; woal_cfg80211_change_virtual_intf,        .s">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-06-12T06:17:46.000Z">
+<meta property="article:modified_time" content="2022-06-12T06:19:13.748Z">
 <meta property="article:author" content="L.D.2021">
+<meta property="article:tag" content="code analysis, Wi-Fi, Driver;">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -144,278 +149,127 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-CODE-ANALYSIS-4-scan-process" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-9-data-tx-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:25:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-9-data-tx-process/">CODE-ANALYSIS:9-data-tx-process</a>
+    <h1 class="article-title" itemprop="name">
+      CODE-ANALYSIS:4-scan-process
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-8-data-rx-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:24:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-8-data-rx-process/">CODE-ANALYSIS:8-data-rx-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-7-get-connection-info/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:23:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-7-get-connection-info/">CODE-ANALYSIS:7-get-connection-info</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-6-disconnect-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:22:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-6-disconnect-process/">CODE-ANALYSIS:6-disconnect-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-5-connect-process/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:21:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-5-connect-process/">CODE-ANALYSIS:5-connect-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-5-connect-process-hostmlme/" class="archive-article-date">
-  	<time datetime="2022-06-12T06:19:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-5-connect-process-hostmlme/">CODE-ANALYSIS:5-connect-process-hostmlme</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-4-scan-process/" class="archive-article-date">
+        
+        <a href="/2022/06/12/CODE-ANALYSIS-4-scan-process/" class="archive-article-date">
   	<time datetime="2022-06-12T06:17:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
 </a>
  
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Fri Jun  3 20:55:15 CST 2022</p>
+<p>// driver scan process.</p>
+<p>/<em>* cfg80211 operations </em>/<br>static struct cfg80211_ops woal_cfg80211_ops = {<br>        .change_virtual_intf = woal_cfg80211_change_virtual_intf,<br>        .scan = woal_cfg80211_scan,</p>
+<ul>
+<li>@brief Request the driver to do a scan. Always returning</li>
+<li>zero meaning that the scan request is given to driver,</li>
+<li>and will be valid until passed to cfg80211_scan_done().</li>
+<li><p>To inform scan results, call cfg80211_inform_bss().<br><em><br>static int<br>woal_cfg80211_scan(struct wiphy </em>wiphy, struct cfg80211_scan_request *request)</p>
+<p>  PRINTM(MINFO, “Received scan request on %s\n”, dev-&gt;name);    </p>
+</li>
+</ul>
+<p>if (MLAN_STATUS_SUCCESS != woal_do_scan(priv, scan_req)) {</p>
+<p>// request scan<br>mlan_status<br>woal_do_scan(moal_private <em>priv, wlan_user_scan_cfg </em>scan_cfg)</p>
+<p>if (!scan_cfg)<br>        ret = woal_request_scan(priv, MOAL_NO_WAIT, NULL);<br>else<br>        ret = woal_request_userscan(priv, MOAL_NO_WAIT, scan_cfg);</p>
+<p>scan = (mlan_ds_scan *)ioctl_req-&gt;pbuf;<br>scan-&gt;sub_command = MLAN_OID_SCAN_USER_CONFIG;<br>ioctl_req-&gt;req_id = MLAN_IOCTL_SCAN;<br>ioctl_req-&gt;action = MLAN_ACT_SET;</p>
+<pre><code>/* Send IOCTL request to MLAN */
+    status = woal_request_ioctl(priv, ioctl_req, wait_option);
+
+
+
+status = mlan_ioctl(priv-&gt;phandle-&gt;pmlan_adapter, req);
+</code></pre><p>static mlan_operations mlan_sta_ops = {<br>        /<em> init cmd handler </em>/<br>        wlan_ops_sta_init_cmd,<br>        /<em> ioctl handler </em>/<br>        wlan_ops_sta_ioctl,<br>        /<em> cmd handler </em>/<br>        wlan_ops_sta_prepare_cmd,</p>
+<p>mlan_status<br>wlan_ops_sta_ioctl(t_void *adapter, pmlan_ioctl_req pioctl_req)</p>
+<p>case MLAN_IOCTL_SCAN:<br>status = wlan_scan_ioctl(pmadapter, pioctl_req);<br>break;</p>
+<p>// Get /set scan<br>static mlan_status<br>wlan_scan_ioctl(pmlan_adapter pmadapter, pmlan_ioctl_req pioctl_req)<br>PRINTM(MMSG, “wlan: %s START SCAN\n”, dev-&gt;name);</p>
+<p>// to start scan based on input config<br>case MLAN_OID_SCAN_USER_CONFIG:<br>status = wlan_scan_networks(pmpriv, pioctl_req,<br>                (wlan_user_scan_cfg *)<br>                pscan-&gt;param.user_scan.<br>                scan_cfg_buf);<br>break;</p>
+<p>// Construct and send multiple scan config commands to the firmware<br>    ret = wlan_scan_channel_list(pmpriv, pioctl_buf, max_chan_per_scan,<br>                         filtered_scan, &amp;pscan_cfg_out-&gt;config,<br>                        pchan_list_out, pscan_chan_list);</p>
+<p>// Send the scan command to the firmware with the specified cfg<br>    cmd_no = HostCmd_CMD_802_11_SCAN_EXT;<br>    else<br>            cmd_no = HostCmd_CMD_802_11_SCAN;<br>    ret = wlan_prepare_cmd(pmpriv, cmd_no, HostCmd_ACT_GEN_SET, 0,<br>                    MNULL, pscan_cfg_out);</p>
+<p>//     /<em> Get scan command from scan_pending_q and put to cmd_pending_q </em>/<br>    wlan_insert_cmd_to_pending_q(pmadapter,<br>                    pcmd_node, MTRUE);</p>
+<pre><code>PRINTM(MCMND, &quot;QUEUE_CMD: cmd=0x%x is queued\n&quot;, command);
+</code></pre><p>// main process<br>mlan_status<br>mlan_main_process(t_void *padapter)</p>
+<p>if (wlan_exec_next_cmd(pmadapter) ==</p>
+<p>// This function execute the next command in the cmd pending queue.<br>mlan_status<br>wlan_exec_next_cmd(mlan_adapter *pmadapter)</p>
+<p>util_unlink_list(pmadapter-&gt;pmoal_handle,<br>        &amp;pmadapter-&gt;cmd_pending_q,<br>        (pmlan_linked_list)pcmd_node, MNULL, MNULL);<br>wlan_release_cmd_lock(pmadapter);<br>ret = wlan_dnld_cmd_to_fw(priv, pcmd_node);</p>
+<p>// This function download a command to firmware<br>static mlan_status<br>wlan_dnld_cmd_to_fw(mlan_private <em>pmpriv, cmd_ctrl_node </em>pcmd_node)</p>
+<p>/<em> Send the command to lower layer </em>/<br>ret = pmadapter-&gt;ops.host_to_card(pmpriv, MLAN_TYPE_CMD,<br>                pcmd_node-&gt;cmdbuf, MNULL);</p>
+<p>mlan_adapter_operations mlan_sdio_ops = {<br>        .dnld_fw = wlan_sdio_dnld_fw,<br>        .host_to_card = wlan_sdio_host_to_card_ext,</p>
+<p>// This function sends data to card<br>static mlan_status<br>wlan_sdio_host_to_card_ext(pmlan_private pmpriv, t_u8 type,<br>               mlan_buffer <em>pmbuf, mlan_tx_param </em>tx_param)</p>
+<p>// This function will send the data to card by methods via the type of the data.(data/ command)<br>    ret = wlan_sdio_host_to_card(pmadapter, type, pmbuf, tx_param);</p>
+<p>/<em> Setup the timer after transmit command </em>/<br>pcb-&gt;moal_start_timer(pmadapter-&gt;pmoal_handle,<br>                pmadapter-&gt;pmlan_cmd_timer, MFALSE, timeout);</p>
+<p>==============================================================================================</p>
+<p>// This function handles events generated by firmware<br>mlan_status<br>wlan_ops_sta_process_event(t_void *priv)</p>
+<p>// process scan result through event<br>case EVENT_EXT_SCAN_REPORT:      // 0x58<br>PRINTM(MEVENT, “EVENT: EXT_SCAN Report (%d)\n”,<br>                pmbuf-&gt;data_len);<br>if (pmadapter-&gt;pscan_ioctl_req &amp;&amp; pmadapter-&gt;ext_scan)<br>        ret = wlan_handle_event_ext_scan_report(priv, pmbuf);<br>break;</p>
+<p>// This function handle the event extended scan report<br>mlan_status<br>wlan_handle_event_ext_scan_report(mlan_private <em>pmpriv, mlan_buffer </em>pmbuf)</p>
+<p>// This function parse and sotre the extended scan result<br>wlan_parse_ext_scan_result(pmpriv, pevent_scan-&gt;num_of_set, ptlv,<br>                   tlv_buf_left);</p>
+<p>// This fucnntion handle the event exteded scan status<br>case EVENT_EXT_SCAN_STATUS_REPORT:      // 0x7f<br>PRINTM(MEVENT, “EVENT: EXT_SCAN status report (%d)\n”,<br>                pmbuf-&gt;data_len);<br>pmadapter-&gt;ext_scan_timeout = MFALSE;<br>ret = wlan_handle_event_ext_scan_status(priv, pmbuf);<br>break;</p>
+<p>// print current scan status</p>
+<p>// update channel statistics from scan result<br>case TLV_TYPE_CHANNEL_STATS:<br>tlv_chan_stats = (MrvlIEtypes_ChannelStats_t *)tlv;<br>wlan_update_chan_statistics(pmpriv, tlv_chan_stats);<br>break;</p>
+<p>/<em> Now we got response from FW, cancel the command timer </em>/</p>
+<p>// process the resulting scan table<br>wlan_scan_process_results(pmpriv);<br>// Post process the scan table after a new scan command has completed<br>static t_void<br>wlan_scan_process_results(mlan_private *pmpriv)</p>
+<p>// check if the media_connected status<br>// if it is connected, update the status of the current work</p>
+<p>// find a specific compatible BSSID in the scan list<br>j = wlan_find_bssid_in_list(pmpriv,<br>                pmpriv-&gt;curr_bss_params.<br>                bss_descriptor.mac_address,<br>                pmpriv-&gt;bss_mode);</p>
+<p>// save the current beacon buffer<br>    wlan_save_curr_bcn(pmpriv);</p>
+<p>caculate the channel load</p>
+<p>update channel rssi</p>
+<p>/*</p>
+<ul>
+<li>Prepares domain info from scan table and downloads the</li>
+<li>domain info command to the FW.<br>*/<br>wlan_11d_prepare_dnld_domain_info_cmd(pmpriv);<br>PRINTM(MMSG, “wlan: SCAN COMPLETED: scanned AP count=%d\n”,<pre><code>       pmadapter-&gt;num_in_scan_table);
+</code></pre></li>
+</ul>
+<p>// This function parse country info from AP and download country info to FW<br>/<em> Check if connected </em>/<br>if (pmpriv-&gt;media_connected == MTRUE) {<br>        ret = wlan_11d_parse_dnld_countryinfo(pmpriv,<br>                        &amp;pmpriv-&gt;<br>                        curr_bss_params.<br>                        bss_descriptor);<br>} else {<br>        ret = wlan_11d_parse_dnld_countryinfo(pmpriv, MNULL);<br>}</p>
+<p>/<em> Generate domain info </em>/<br>wlan_11d_generate_domain_info(pmadapter, &amp;region_chan);</p>
+<p>/<em> Set domain info </em>/<br>ret = wlan_11d_send_domain_info(pmpriv, MNULL);<br>/<em> Send cmd to FW to set domain info </em>/<br>ret = wlan_prepare_cmd(pmpriv, HostCmd_CMD_802_11D_DOMAIN_INFO,<br>                HostCmd_ACT_GEN_SET, 0, (t_void *)pioctl_buf,<br>                MNULL);</p>
+<p>complete the scan ioctl</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-4-scan-process/">CODE-ANALYSIS:4-scan-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -427,142 +281,114 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/12/CODE-ANALYSIS-4-scan-process/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-3-fw-init/" class="archive-article-date">
-  	<time datetime="2022-06-11T16:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
 
+  
+<nav id="article-nav">
+  
+    <a href="/2022/06/12/CODE-ANALYSIS-5-connect-process-hostmlme/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          CODE-ANALYSIS:5-connect-process-hostmlme
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/12/CODE-ANALYSIS-3-fw-init/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CODE-ANALYSIS:3-fw-init</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-3-fw-init/">CODE-ANALYSIS:3-fw-init</a>
-    </h1>
-  
+        
+        
+    </div>
+</aside>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/" class="archive-article-date">
-  	<time datetime="2022-06-11T16:00:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/">CODE-ANALYSIS:2-bus-driver-register</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/" class="archive-article-date">
-  	<time datetime="2022-06-11T15:37:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
- 
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/">CODE-ANALYSIS:1-module-init-process</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/2/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -599,8 +425,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
