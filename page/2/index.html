@@ -146,20 +146,20 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-CWNA-802-11-MAC-体系结构-五" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CODE-ANALYSIS-2-bus-driver-register" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/21/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%94/">CWNA:802.11 MAC 体系结构(五)</a>
+      <a class="article-title" href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/">CODE-ANALYSIS:2-bus-driver-register</a>
     </h1>
   
 
         
-        <a href="/2022/02/21/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%94/" class="archive-article-date">
-  	<time datetime="2022-02-21T02:11:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-21</time>
+        <a href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/" class="archive-article-date">
+  	<time datetime="2022-06-11T16:00:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
 </a>
  
 
@@ -168,27 +168,24 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="数据帧"><a href="#数据帧" class="headerlink" title="数据帧"></a>数据帧</h3><p>IEEE802.11-2016标准定义了15种数据子类型，11种仅停留在纸面上，4种实际存在的。</p>
-<blockquote>
-<p>数据帧（DATA）<br>空帧（null data)<br>Qos数据帧(Qos Data)<br>Qos空帧(Qos null data)</p>
-</blockquote>
-<p>只要非Qos 设备作为发送方或接收方参与通信，就必须使用非Qos数据帧。</p>
-<p><strong>不携带数据的数据帧</strong><br>仅由帧头和帧尾构成，帧体中没有MSDU数据。</p>
-<p>如果客户端希望通知接入点自己的节电状态有所变化，那么可以调整空帧的电源管理位。<br>客户端决定进行信道外扫描时，将向接入点发送一个电源管理位设置为1的空功能帧，收到这个帧后，接入点将就所有传输给客户端的802.11帧存储在缓冲区。<br>当客户端返回接入点所在的信道时，将向接入点发送另一个电源管理位设置为0的空功能帧。收到这个空功能帧后，接入点就向客户端发送缓冲帧。（可提高吞吐量）</p>
-<h3 id="电源管理"><a href="#电源管理" class="headerlink" title="电源管理"></a>电源管理</h3><p>无线主要提供了客户端的移动性，客户端一般使用电池，电源管理主要是为了提高设备的续航能力。</p>
-<p><strong>遗留的电源管理机制</strong><br>主动模式是早期802.11终端使用的电源管理模式，无线终端随时准备发送和接收数据。它不提供任何节电功能。使用该模式的终端获得更高的吞吐量，但电池使用时间通常要更短。<br>应将始终与电源相连的终端配置为主动模式。</p>
-<p>节电模式，客户端将在一段时间内关闭部分收发组件以减少耗电。</p>
-<p>1.流量指示图<br>加入基本服务集的客户端将电源管理位设置为1，以此通知接入点启用节电模式。接入点获知客户端处于节电模式，随后将收到的传输给客户端的数据存储在缓冲区中。每当客户端<br>关联到接入点时，都会收到关联标识符（AID），接入点通过AID来跟踪与自己建立关联且加入基本服务集的客户端。如果接入点缓冲了客户端的数据，将在下一次发送信标帧时，<br>信标帧的流量指示图（TIM）字段就会包括客户端的AID。TIM字段列出了所有需要接收数据的客户端，这些数据存储在接入点的缓冲区中。每个信标帧都会携带客户端的AID，直到<br>缓冲区数据传输完毕。</p>
-<p>信标帧根据一致的预定时间传输，这段时间称为目标信标传输时间（TBTT）。客户端在短时间内继续保持休眠状态，并及时切换到唤醒状态侦听信标帧。客户端不必在每次信标帧<br>发送时保持唤醒状态。</p>
-<p>客户端收到信标帧的时候，将查看自己的AID是否出现在TIM中，如果存在，客户端将保持唤醒并向接入点发送节电轮询帧。接入点收到节电轮询帧后，将向客户端发送数据单播帧。<br>每个单播帧保护长度1比特的更多数据字段，如果是1，客户端不进入休眠状态继续接收数据。不过客户端需要继续发送ps-poll帧。<br>当更多数据字段为0时，客户端重新进入休眠。</p>
-<p>2.发送流量指示图<br>多播和广播流量传输期间，发送流量指示图（DTIM)用于确保所有使用电源管理的终端保持唤醒状态。</p>
-<p><strong>WMM节电与非调度自动节电传输</strong><br>802.11e定义了改进的电源管理机制，自动节电传输（APSD）。分为两种<br>调度自动节电传输（S-APSD）<br>非调度自动节电传输（U-APSD）</p>
-<p>改进后的优点：</p>
-<blockquote>
-<p>应用可以通过设置休眠期并发送触发帧来控制节电行为。<br>触发帧和交付方法可以取代节电轮询帧。<br>客户端可以请求下载缓冲数据，不必等待信标帧。<br>TXOP期间，接入点可以在更快的帧突发中传输所有下行应用流量。</p>
-</blockquote>
-<p><strong>MIMO电源管理机制</strong><br>空间复用节电，仅保持一条射频链，关闭其他射频链。</p>
-
+        <p>Jun  3 16:36:02 CST 2022</p>
+<p>//while Wi-Fi card is detected by the Wi-Fi driver. Will trigger the register work.</p>
+<p>static void<br>woal_bus_register(struct work_struct *work)</p>
+<p>register wlan_sdio operation struct to kernel<br>/<em> SDIO Driver Registration </em>/<br>if (sdio_register_driver(&amp;wlan_sdio)) {</p>
+<pre><code>static struct sdio_driver REFDATA wlan_sdio = &#123;
+    .name = &quot;wlan_sdio&quot;,
+    .id_table = wlan_ids,
+    .probe = woal_sdio_probe,
+    .remove = woal_sdio_remove,
+</code></pre><p>if the Wi-Fi sdio card is detected by the OS, .probe function will be invoked.</p>
+<p>show the vendor info of the detected card.</p>
+<p>update the card current card type, current is 8997.</p>
+<p>// add the card to system via the above card type.<br>woal_add_card(card, &amp;card-&gt;func-&gt;dev, &amp;sdiommc_ops, card_type)) {</p>
+<pre><code>static moal_if_ops sdiommc_ops = &#123;
+    .register_dev = woal_sdiommc_register_dev,
+    .unregister_dev = woal_sdiommc_unregister_dev,
+    .read_reg = woal_sdiommc_read_reg,
+</code></pre>
       
 
       
@@ -201,7 +198,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
         		</li>
       		
 		</ul>
@@ -211,7 +208,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/21/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%94/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/06/12/CODE-ANALYSIS-2-bus-driver-register/">展开全文 >></a>
         </p>
       
 
@@ -241,20 +238,20 @@
 
 
   
-    <article id="post-CWNA-802-11-MAC-体系结构-四" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CODE-ANALYSIS-1-module-init-process" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/18/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E5%9B%9B/">CWNA:802.11 MAC 体系结构(四)</a>
+      <a class="article-title" href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/">CODE-ANALYSIS:1-module-init-process</a>
     </h1>
   
 
         
-        <a href="/2022/02/18/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E5%9B%9B/" class="archive-article-date">
-  	<time datetime="2022-02-18T10:08:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-18</time>
+        <a href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/" class="archive-article-date">
+  	<time datetime="2022-06-11T15:37:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
 </a>
  
 
@@ -263,22 +260,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="控制帧"><a href="#控制帧" class="headerlink" title="控制帧"></a>控制帧</h3><p>控制帧协助传输数据帧，以某个基本速率发送。仅由MAC帧头和帧尾构成，没有帧体。</p>
-<p>12种控制帧子类型：</p>
-<blockquote>
-<p>波束成形报告轮询帧<br>VHT NDP 通告帧<br>控制帧扩展<br>控制帧封装<br>块确认请求帧(BAR)<br>请求发送帧（RTS)<br>允许发送帧(CTS)<br>确认帧(ACK)<br>CF-End 帧<br>CF-End + CF-ACK 帧</p>
-</blockquote>
-<p><strong>确认帧(ACK)</strong><br>由于802.11通信使用无线介质无法确保数据传输成功，发送端只能依靠接收端的通知来判断传输的帧是否已正确接收。</p>
-<p>格式：共14字节<br>帧控制|持续时间|接收机地址|FCS<br>2|2|6|4</p>
-<p><strong>块确认帧（BAR）</strong><br>802.11e定义的块确认机制，它将多个确认帧聚合为一个确认帧以提高信道利用率。分为两类：<br>1.即时块确认（immediate BA): 适用于延迟容忍度较低的流量。<br>2.延迟块确认(delayed BA): 适用于容忍度较高的流量。</p>
-<p>块确认帧中的位图(bitmap)字段用于标识所有的接收数据帧的状态。如果只有一个数据帧损坏，那么只需要重传该帧。</p>
-<p><strong>节电轮询帧（PS-Poll）</strong><br>采用遗留电源管理机制的客户端通过节电轮询帧请求接入点发送缓冲流量。<br>节电轮询帧中的持续时间/ID字段作为AID，用AID标识自己向接入点请求缓冲的单播帧。<br>仅有节电轮询帧使用持续时间/ID字段作为AID。</p>
-<p><strong>RTS/CTS</strong><br>存在客户端无法侦听到其他客户端的情况。<br>请求发送/允许发送机制通过实施NAV分发以帮助避免冲突。</p>
-<p>使用RTS/CTS机制的终端每次准备发送帧时，必须在正常的数据传输前执行（RTS/CTS）</p>
-<p><strong>CTS-to-Self</strong><br>相较于RTS/CTS，CTS-to-self作为保护机制的优点是发送帧数更少，吞吐量因此而提高。</p>
-<p><strong>保护机制</strong><br>802.11标准定义了ERP保护机制，以便两个802.11g无线接口的OFDM传输不会受到DSSS或HR-DSSS传输的干扰。<br>802.11g ERP终端使用所有终端都能理解的语言通知它们重置NAV计数器。利用RTS/CTS或CTS-to-self帧保留介质后，802.11g终端就能采用OFDM技术调制传输数据帧，<br>不必担心与802.11bHR-DSSS或遗留的802.11DSSS终端发生冲突。</p>
-<p>在ERP基本服务集中触发保护机制的3种情况：<br>1.如果非ERP客户端关联到ERP接入点，ERP接入点将其信标帧的NonERP_Present 位设置1，从而在基本服务集种启用保护机制。<br>2.如果侦听到802.11DSSS或802.11b HR-DSSS接入点发送信标帧，会启用保护机制<br>3.如果侦听到802.11DSSS或802.11b HR-DSSS速率的管理帧，会启用保护机制。</p>
-<p>ERP保护机制利用RTS/CTS或CTS-to-Self帧确保802.11终端和遗留的802.11b终端能共存于同一基本服务集。</p>
+        <p>2022/06/03</p>
+<p>// driver code enter point<br>module_init(woal_init_module);</p>
+<p>init card adapter card, maximum support is 4</p>
+<p>init proc and crate proc/mwlan  wifi_status</p>
+<p>init FW hang work queue.</p>
+<p>init hang work to process FW hang</p>
+<p>init register work queue</p>
+<p>init register work to process bus driver register.<br>queue_work register work to register work queue.</p>
 
       
 
@@ -292,7 +281,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code analysis, Wi-Fi, Driver;</a>
         		</li>
       		
 		</ul>
@@ -302,7 +291,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/18/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E5%9B%9B/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/06/11/CODE-ANALYSIS-1-module-init-process/">展开全文 >></a>
         </p>
       
 
@@ -332,20 +321,20 @@
 
 
   
-    <article id="post-CWNA-802-11-MAC-体系结构-三" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-访问维基百科-wikipedia的方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/16/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%B8%89/">CWNA:802.11 MAC 体系结构(三)</a>
+      <a class="article-title" href="/2022/05/17/%E8%AE%BF%E9%97%AE%E7%BB%B4%E5%9F%BA%E7%99%BE%E7%A7%91-wikipedia%E7%9A%84%E6%96%B9%E6%B3%95/">访问维基百科-wikipedia的方法</a>
     </h1>
   
 
         
-        <a href="/2022/02/16/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%B8%89/" class="archive-article-date">
-  	<time datetime="2022-02-16T01:22:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-16</time>
+        <a href="/2022/05/17/%E8%AE%BF%E9%97%AE%E7%BB%B4%E5%9F%BA%E7%99%BE%E7%A7%91-wikipedia%E7%9A%84%E6%96%B9%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2022-05-17T15:24:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-17</time>
 </a>
  
 
@@ -354,124 +343,468 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="802-11状态机"><a href="#802-11状态机" class="headerlink" title="802.11状态机"></a>802.11状态机</h3><p>802.11-2016定义了4种客户端状态，称为802.11状态机。旨在使得客户端和接入点能发现彼此并建安全连接。</p>
-<p>主动扫描与被动扫描（active/passive scan）———     状态1：未通过验证未建立关联</p>
-<p>802.11身份验证成功(authentication request/response) ———          状态2：已通过验证未建立关联</p>
-<p>802.11（重）关联成功(association request/response) ———           状态3：已通过验证，已建立关联</p>
-<p>四次握手成功(4-way handshake) ———               状态4：以通过验证，已建立关联</p>
-<h3 id="管理帧"><a href="#管理帧" class="headerlink" title="管理帧"></a>管理帧</h3><p>IEEE802.11-2016定义了14种管理帧子类型</p>
+        <p>Google,Bing搜索概念时，出现维基百科的网址一般无法访问，即使是VPN也是如此。<br>可以通过替换网址成功访问。例如：</p>
 <blockquote>
-<p>关联请求帧<br>关联响应帧<br>重关联请求帧<br>重关联响应帧<br>探询请求帧<br>探询响应帧<br>信标帧<br>通过流量指示消息<br>取消关联帧<br>身份验证帧<br>解除身份验证帧<br>行动帧<br>无确认行动帧<br>定时通告帧</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/A.out">https://en.wikipedia.org/wiki/A.out</a>         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 提示无法访问此网站<br><a target="_blank" rel="noopener" href="https://en.wikipedia.iwiki.eu.org/wiki/A.out">https://en.wikipedia.iwiki.eu.org/wiki/A.out</a>          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 可以成功访问</p>
 </blockquote>
-<p><strong>信标帧（Beacon)</strong><br>相当于无线网络的心跳消息。接入点利用信标帧向客户端通告基本服务集的所有配置信息。信标帧间隔102.4毫秒，每秒大约发送10次信标帧。<br>基本服务集中：接入点广播信标帧，客户端侦听信标帧。<br>IBSS中：客户端之间传输信标帧。</p>
-<p>信标帧包含的信息</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Misc</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/17/%E8%AE%BF%E9%97%AE%E7%BB%B4%E5%9F%BA%E7%99%BE%E7%A7%91-wikipedia%E7%9A%84%E6%96%B9%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GIT-delete-history-commit" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/25/GIT-delete-history-commit/">GIT:delete history commit.</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/25/GIT-delete-history-commit/" class="archive-article-date">
+  	<time datetime="2022-03-25T15:40:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-25</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Follow the below steps to complete this task.<br>[Warning]: This will remove your old commit history completely, You can’t recover it again.</p>
+<p>1，Create Orphan Branch – Create a new orphan branch in git repository. The newly created branch will not show in ‘git branch’ command.<br>git checkout —orphan temp_branch</p>
+<p>2，Add Files to Branch – Now add all files to newly created branch and commit them using following commands.<br>git add -A<br>git commit -am “the first commit”</p>
+<p>3，Delete master Branch – Now you can delete the master branch from your git repository.<br>git branch -D master</p>
+<p>4，Rename Current Branch – After deleting the master branch, let’s rename newly created branch name to master.<br>git branch -m master</p>
+<p>5，Push Changes – You have completed the changes to your local git repository. Finally, push your changes to remote (Github) repository forcefully.<br>git push -f origin master</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">git skills</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/25/GIT-delete-history-commit/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/25/hello-world/">Hello World</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/25/hello-world/" class="archive-article-date">
+  	<time datetime="2022-03-25T15:10:28.731Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-25</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/25/hello-world/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-CWNA-802-11ax技术-高效无线局域网-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/01/CWNA-802-11ax%E6%8A%80%E6%9C%AF-%E9%AB%98%E6%95%88%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91-%E4%BA%8C/">CWNA:802.11ax技术:高效无线局域网(二)</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/01/CWNA-802-11ax%E6%8A%80%E6%9C%AF-%E9%AB%98%E6%95%88%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91-%E4%BA%8C/" class="archive-article-date">
+  	<time datetime="2022-03-01T07:11:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-01</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="基本服务集颜色"><a href="#基本服务集颜色" class="headerlink" title="基本服务集颜色"></a>基本服务集颜色</h3><p>重叠基本服务集（OBSS）通常称为同信道干扰，如果位于信道36的接入点1侦听到附近同样位于信道36的接入点2的前同步码传输，<br>接入点1将推迟自己的传输，避免与接入点2同时发送数据。</p>
+<p>802.11ax引入的BSS color有望将信道复用效率提高8倍，致力于解决OBSS引起的介质争用开销问题。</p>
+<p>物理层和MAC子层都会传输BSS颜色信息。<br>802.11ax物理层头部的前同步码种，SIG-A字段包含长度6bit的BSS颜色字段，可以标识多达63个BSS。<br>MAC子层的BSS颜色信息位于802.11管理帧种，可以标识63种不同的BSS。<br>BSS 颜色根据颜色区分是否来自相邻的OBSS干扰，极大提高信道利用率。</p>
+<p>TWT目标唤醒时间节电机制，指定预订的目标唤醒时间。</p>
+<p>MU-OFDMA,BSS color, MU-MIMO和TWT是802.11ax的核心技术。<br>详细可以根据最新协议查阅。<br>CWNA，无线局域网权威指南第五版记录到此。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/01/CWNA-802-11ax%E6%8A%80%E6%9C%AF-%E9%AB%98%E6%95%88%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91-%E4%BA%8C/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-CWNA-802-11ax技术-高效无线局域网" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/01/CWNA-802-11ax%E6%8A%80%E6%9C%AF-%E9%AB%98%E6%95%88%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91/">CWNA:802.11ax技术:高效无线局域网</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/01/CWNA-802-11ax%E6%8A%80%E6%9C%AF-%E9%AB%98%E6%95%88%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91/" class="archive-article-date">
+  	<time datetime="2022-03-01T01:30:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-01</time>
+</a>
+ 
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>高效无线局域网技术概述<br>多用户<br>正交频分多址</p>
+<blockquote>
+<p>副载波<br>资源单元<br>触发帧<br>下行链路OFDMA<br>上行链路OFDMA</p>
+</blockquote>
+<p>多用户-多输入多输出<br>基本服务集颜色</p>
+<blockquote>
+<p>自适应空闲信道评估<br>双NAV计数器</p>
+</blockquote>
+<p>目标唤醒时间<br>其他802.11ax物理层与MAC子层功能</p>
+<blockquote>
+<p>1024-QAM<br>长符合时间与保护间隔<br>802.11ax PPDU格式<br>仅20MHz模式<br>多流量标识符聚合的MAC协议数据单元</p>
+</blockquote>
+<p>802.11ax设计注意事项</p>
+<h3 id="高效无线局域网技术概述"><a href="#高效无线局域网技术概述" class="headerlink" title="高效无线局域网技术概述"></a>高效无线局域网技术概述</h3><p>高效无线局域网（HEW）是描述802.11ax技术的专业术语。<br>由于无线局域网工作原理决定的，总吞吐量通常最多只能达到标定802.11数据速率的50%。</p>
+<p>导致802.11流量拥塞的因素：<br>遗留客户端的存在导致需要部署RTS/CTS保护机制，保护机制会降低效率。<br>小的数据帧导致MAC子层和介质争用开销过多。<br>由于高层应用协议的缘故，小帧必须按顺序传输，难以实施聚合。（例如:语音）</p>
+<p>802.11n/ac无线接口尽管可以使用更高的数据速率和更宽的信道，但却可能导致802.11流量拥塞。<br>802.11ax致力于更好的流量管理，它的目标并非提高数据速率或增加信道宽度，而是实现更优质、更高效的802.11流量管理。</p>
+<p>802.11n、802.11ac、802.11ax技术比较</p>
 <div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:center">信息类型</th>
-<th style="text-align:center">描述</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">802.11n</th>
+<th style="text-align:center">802.11ac</th>
+<th style="text-align:center">802.11ax</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">时间戳</td>
-<td style="text-align:center">同步信息</td>
+<td style="text-align:center">频段</td>
+<td style="text-align:center">2.4GHz 和5GHz</td>
+<td style="text-align:center">仅5GHz</td>
+<td style="text-align:center">2.4GHz和5GHz</td>
 </tr>
 <tr>
-<td style="text-align:center">扩频参数集</td>
-<td style="text-align:center">FHSS、OFDM等</td>
+<td style="text-align:center">信道宽度</td>
+<td style="text-align:center">20MHz\40MHz</td>
+<td style="text-align:center">20/40/80/80+80/160MHz</td>
+<td style="text-align:center">20/40/80/80+80/160MHz</td>
 </tr>
 <tr>
-<td style="text-align:center">SSID</td>
-<td style="text-align:center">无线局域网的逻辑名</td>
+<td style="text-align:center">频率复用技术</td>
+<td style="text-align:center">OFDM</td>
+<td style="text-align:center">OFDM</td>
+<td style="text-align:center">OFDM和OFDMA</td>
 </tr>
 <tr>
-<td style="text-align:center">数据速率</td>
-<td style="text-align:center">基本速率和支持速率</td>
+<td style="text-align:center">副载波间隔</td>
+<td style="text-align:center">312.5kHz</td>
+<td style="text-align:center">312.5kHz</td>
+<td style="text-align:center">78.125kHz</td>
 </tr>
 <tr>
-<td style="text-align:center">服务集功能</td>
-<td style="text-align:center">额外的BSS或IBSS参数</td>
+<td style="text-align:center">OFDM符号时间</td>
+<td style="text-align:center">3.2微秒</td>
+<td style="text-align:center">3.2微秒</td>
+<td style="text-align:center">12.8微秒</td>
 </tr>
 <tr>
-<td style="text-align:center">信道信息</td>
-<td style="text-align:center">接入点或IBSS使用的信道</td>
+<td style="text-align:center">保护间隔</td>
+<td style="text-align:center">0.4或0.8微秒</td>
+<td style="text-align:center">0.4或0.8微秒</td>
+<td style="text-align:center">0.8、1.6或3.2微秒</td>
 </tr>
 <tr>
-<td style="text-align:center">流量指示图</td>
-<td style="text-align:center">节电过程使用的字段</td>
+<td style="text-align:center">总符号时间</td>
+<td style="text-align:center">3.6或4.0微秒</td>
+<td style="text-align:center">3.6或4.0微秒</td>
+<td style="text-align:center">13.6、14.4或16.0微秒</td>
 </tr>
 <tr>
-<td style="text-align:center">BSS负载</td>
-<td style="text-align:center">802.11e指定的字段，能有效指示信道利用率</td>
+<td style="text-align:center">调制技术</td>
+<td style="text-align:center">BPSK/QPSK/16-QAM/64-QAM</td>
+<td style="text-align:center">BPSK/QPSK/16-QAM/64-QAM</td>
+<td style="text-align:center">BPSK/QPSK/16-QAM/64-QAM/1024-QAM</td>
 </tr>
 <tr>
-<td style="text-align:center">Qos功能</td>
-<td style="text-align:center">服务质量和增强型分布式信道访问信息</td>
-</tr>
-<tr>
-<td style="text-align:center">RSN功能</td>
-<td style="text-align:center">TKIP或CCMP密码信息和身份验证机制</td>
-</tr>
-<tr>
-<td style="text-align:center">HT与VHT功能</td>
-<td style="text-align:center">802.11n和802.11ac功能</td>
-</tr>
-<tr>
-<td style="text-align:center">供应商专有信息</td>
-<td style="text-align:center">特定于供应商的信息</td>
+<td style="text-align:center">多用户-多输入多输出</td>
+<td style="text-align:center">不适用</td>
+<td style="text-align:center">下行传输</td>
+<td style="text-align:center">下行传输和上行传输</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>1.被动扫描<br>客户端必须发现接入点才能进行连接。<br>客户端进行被动扫描时，将侦听接入点不断发送的信标帧(Beacon)。</p>
-<p>不足之处，信标帧仅在接入点使用的信道对外广播。</p>
-<p>2.主动扫描<br>客户端发送探询帧，它既可以包括客户端正在查找的特定无线局域网的SSID，也可以搜索任何SSID。<br>探询帧SSID字段为空：查找所有可能的SSID<br>探询帧SSID字段存在：查找特定的SSID。</p>
-<p>探询响应帧(probe request)，用于回复探询请求帧。（probe response)</p>
-<p>主动扫描通过所有可用信道发送探询请求帧。</p>
-<p>客户端即便已经关联到接入点并开始传输数据，客户端一般也会实施信道外扫描（off-channel scanning),并继续每隔几秒就利用其他信道发送探询请求帧。<br>主要目的是寻找可能漫游到其他接入点，通过off-channel scanning 客户端维护并更新一份已知接入点列表，从而在需要的时可以更快、更有效进行地漫游。</p>
-<p><strong>身份验证帧（authentication）</strong><br>相当于验证两台设备是否是有效的802.11设备，客户端与接入点之间建立初步连接。802.11状态机进入状态2<br>两种身份验证机制：<br>1.共享密钥身份验证（早已过时）<br>2.开放系统身份验证<br>它不对客户端的身份做任何验证，本质是属于客户端与接入点之间的问候交换过程。</p>
-<p><strong>关联帧(association)</strong><br>客户端向接入点验证自己的身份后，接下来将与接入点建立关联，关联到接入点的客户端称为基本服务集的成员。802.11状态机进入状态3<br>关联请求帧（association request）的关联响应帧（association response）的帧体包含管理标识符（AID），每个关联的客户端唯一。<br>如果不配做RSN安全，客户端可以请求IP地址并开始上层通信。<br>如果接入点配置了预共享密钥或802.1X/EAP作为身份验证机制，双方还需要进行四次握手(4-way handshake)的帧交换，以便创建动态加密密钥。802.11状态机进入状态4，成为基本服务集的成员。</p>
-<p>如果客户端不能使用所有的基本速率，就无法关联到接入点，也不会获准加入基本服务集。</p>
-<p><strong>重关联帧(reassociation)</strong><br>客户端与接入点的重关联过程：<br>1）客户端向新接入点发送重关联帧；<br>2）新接入点向客户端回复确认帧；<br>3）新接入点尝试利用分布介质（DSM）与原接入点通信，获取漫游客户端的信息，并请求接入点转发所有缓存数据。（这部分是供应商专有）<br>4）如果通信成功，原接入点将使用分布介质向新接入点转发所有缓冲数据。<br>5）新接入点通过无线介质向漫游客户端发送重关联响应帧。<br>6）客户端向新接入点回复确认帧，并准备漫游。<br>7）如果加密了，进行四次握手帧交换，以便在两个无线接口之间生成唯一的加密密钥。</p>
-<p><strong>取消关联帧(deassociation)</strong><br>取消关联属于通知而非请求，包括原因代码。802.11状态机由4/3 切换到2</p>
-<p><strong>解除身份验证帧(deauthentication)</strong><br>属于通知而非请求，包括原因代码。802.11状态机由4/3/2 切换到1</p>
-<p><strong>行动帧(action)</strong><br>用于触发基本服务集的特定操作，旨在为准备执行的操作提供信息和指示。<br>由于管理帧的子类型已经耗尽，802.11h修正案首次引入行动帧。（Action)</p>
-<p>Action帧结构</p>
+<p>802.11ax主要的优势在于OFDMA技术，将信道划分为若干较小的子信道。</p>
+<h3 id="多用户"><a href="#多用户" class="headerlink" title="多用户"></a>多用户</h3><p>OFDMA通过细分信道来实现多用户访问；<br>MU-MIMO通过使用不同的空间流来实现多用户访问；</p>
+<h3 id="正交频分多址（OFDMA）"><a href="#正交频分多址（OFDMA）" class="headerlink" title="正交频分多址（OFDMA）"></a>正交频分多址（OFDMA）</h3><p>OFDMA技术将信道细分为较小的频率分配单元————资源单元（RU）————从而能同时向多个用户发送小帧。例如：<br>将传统的20MHz信道划分为9个子信道，采用OFDMA技术的802.11ax接入点可以同时向9个802.11ax客户端发送小帧。<br>它能够更好的利用频率空间，已经在LTE蜂窝通信中得到验证。</p>
+<p>802.11ax技术仍然采用802.11a/g/n/ac无线接口可以理解的OFDM技术，以基本速率传输管理帧和控制帧。</p>
+<p><strong>副载波</strong><br>802.11n/ac 在20MHz信道包括64个副载波，副载波的宽度为312.5kHz<br>802.11ax在20MHz信道包括256个副载波，副载波宽度为78.125KHz</p>
+<p>副载波包括3种：<br>数据副载波， 采用802.11ac相同的调制编码方案（MCS），增加两种调制编码方案和1024-QAM<br>导频副载波， 仅用于发射机和接收机之间的同步<br>未使用的副载波， 防止邻信道和子信道干扰</p>
+<p><strong>资源单元</strong><br>OFDM传输数据个多个客户端时，每一个时段都需要使用整个20MHz信道与单一客户端进行传输，各客户端分时占用。</p>
+<p>OFDMA包括256个副载波，242个副载波用于传输数据，可以将其细分为 106、 52、 26副载波资源单元，大致对应20MHz、8MHz、4MHz、2MHz<br>802.11ax接入点可以利用8MHz信道与一个802.11ax客户端通信，同时利用4MHz子信道与2个802.11ax客户端进行通信。既可以上行，也可以是下行。</p>
+<p><strong>触发帧</strong><br>触发帧为802.11ax客户端分配资源单元。</p>
 <div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:center">帧控制</th>
-<th style="text-align:center">持续时间</th>
-<th style="text-align:center">目的地址</th>
-<th style="text-align:center">源地址</th>
-<th style="text-align:center">BSSID</th>
-<th style="text-align:center">序列控制</th>
-<th style="text-align:center">类别</th>
-<th style="text-align:center">行动</th>
-<th style="text-align:center">元素</th>
-<th style="text-align:center">FCS</th>
+<th style="text-align:center">触发帧类型</th>
+<th style="text-align:center">各类触发帧</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">6</td>
-<td style="text-align:center">6</td>
-<td style="text-align:center">6</td>
-<td style="text-align:center">2</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">基本触发帧</td>
+</tr>
+<tr>
 <td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">varialble</td>
+<td style="text-align:center">波束成形报告轮询</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">多用户块确认请求</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">多用户请求发送</td>
+</tr>
+<tr>
 <td style="text-align:center">4</td>
+<td style="text-align:center">缓冲区状态报告轮询</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">带重试的组播多用户块确认请求</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">带宽查询报告轮询</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">NDP反馈报告轮询</td>
+</tr>
+<tr>
+<td style="text-align:center">8~15</td>
+<td style="text-align:center">保留</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>行动帧的帧体由3部分构成：<br>类别：描述行动帧的类型<br>操作：准备执行的操作<br>元素：添加有关操作的其他信息。</p>
+<p>触发帧的用户信息字段种每个特定资源单元有长度为7bit的唯一组合定义。</p>
+<p><strong>下行链路OFDMA</strong><br>接入点取得发送机会后，首先发送MU-RTS触发帧，分配资源单元，为了让遗留客户端重置，使用20MHz的信道发送。<br>收到客户端发送的并行CTS响应后，接入点开始向支持OFDMA的客户端传输多用户DL-PPDU。</p>
+<p>802.11ax接入点——————————————————————————————————-802.11ax客户端</p>
+<p>——————-AIFS MU-RTS SIFS————-SIFS—-DL-PPDU SIFS  BAR  SIFS———————-&gt;<br>&lt;———————————————CTS——————————————————块确认帧———-STA1<br>&lt;———————————————CTS——————————————————块确认帧———-STA2<br>&lt;———————————————CTS——————————————————块确认帧———-STA3<br>&lt;———————————————CTS——————————————————块确认帧———-STA4</p>
+<p><strong>上行连接OFDMA</strong><br>802.11ax接入点必须首先竞争介质的控制权并取得发送机会，然后才能协调802.11ax客户端发送的数据（上行传输）<br>上行传输非常复杂。需要三轮触发帧才能实现一次上行传输数据。</p>
+<p>802.11ax接入点———————————————————————————————————————802.11ax客户端</p>
+<p>—-AIFS BSRP SIFS———-SIFS—MU-RTS SIFS —— SIFS 触发帧 SIFS—————-SIFS 多终端块确认帧—-&gt;<br>&lt;—————————BSR——————————CTS——————————UL-PPDU——————————-STA1<br>&lt;—————————BSR——————————CTS——————————UL-PPDU——————————-STA2<br>&lt;—————————BSR——————————CTS——————————UL-PPDU——————————-STA3<br>&lt;—————————BSR——————————CTS——————————UL-PPDU——————————-STA4</p>
 
       
 
@@ -495,7 +828,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/16/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%B8%89/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/03/01/CWNA-802-11ax%E6%8A%80%E6%9C%AF-%E9%AB%98%E6%95%88%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91/">展开全文 >></a>
         </p>
       
 
@@ -525,20 +858,20 @@
 
 
   
-    <article id="post-Linux-shell-script-实践记录-一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CWNA-无线局域网安全体系结构-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/15/Linux-shell-script-%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95-%E4%B8%80/">Linux shell script 实践记录(一)</a>
+      <a class="article-title" href="/2022/02/28/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%8C/">CWNA:无线局域网安全体系结构(二)</a>
     </h1>
   
 
         
-        <a href="/2022/02/15/Linux-shell-script-%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95-%E4%B8%80/" class="archive-article-date">
-  	<time datetime="2022-02-15T10:02:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-15</time>
+        <a href="/2022/02/28/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%8C/" class="archive-article-date">
+  	<time datetime="2022-02-28T09:31:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-28</time>
 </a>
  
 
@@ -547,22 +880,42 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本文展示一个Linux shell scpript实例。其中涉及的的一些Linux和shell相关的知识的如下：</p>
+        <h3 id="强健安全机制"><a href="#强健安全机制" class="headerlink" title="强健安全机制"></a>强健安全机制</h3><p>IEEE802.11-2016标准定义802.1X/EAP作为企业无线网络的身份验证机制；<br>定义预共享密钥或密码短语作为家用无线网络的身份验证机制。</p>
+<p><strong>强健安全网络</strong><br>IEEE802.11-2016定义了强健安全网络（RSN）和强健安全网络关联（RSNA）。<br>两台终端必须验证彼此的身份并建立关联，且通过四次握手过程生成动态加密密钥，这个关联称为RSNA</p>
+<p><strong>身份验证与授权</strong><br>身份验证必须先于授权进行。</p>
+<p><strong>预共享密钥身份验证</strong><br>WPA/WPA2个人版支持最终用户输入长度为8~63个字符的简单ASCII字符串。</p>
+<p>强健安全网络使用预共享密钥长度为256位，以十六进制则表示为64个字符。接入点和所有客户端都会配置预共享密钥，它是一种静态密钥。</p>
+<p>系统的密码短语-预共享密钥映射（passphrase-to-PSK mapping)函数负责将密码短语转换位256位的预共享密钥。它旨在方便普通家庭<br>用户配置密码短语。</p>
+<p>256位预共享密钥可以充当成对主密钥（PMK）。PMK位四次握手提供种子，四次握手用于生成动态加密密钥。因此，WPA/WPA2个人半使用的<br>预共享密钥实际上与PMK完全相同。</p>
+<p><strong>专有预共享密钥身份验证</strong><br>WPA/WPA2的密码短语是静态的，很容易受社会工程学攻击。</p>
+<p>专有预共享密钥身份验证位每个用户设置唯一的密码，为每个用户或每台设备提供唯一的预共享密钥功能。<br>如果摸一个预共享密钥泄漏，管理员只需撤销这一个密钥，不必重新配置所有接入点和最终用户设备。</p>
+<p><strong>对等实体同时验证</strong><br>SAE交换期间，802.11终端之间不会传输密码短语。<br>它以蜻蜓密钥交换（Dragonfly key exchange）为基础，采用零知识证明（zero-knowledge proof）密钥交换，用户或设备必须在不透露<br>密码的情况下证明自己掌握密码。</p>
+<p><strong>802.1X/EAP框架</strong><br>EAP类型众多，它是一种二层身份验证协议。<br>802.1X是基于端口的网络访问控制标准。既能用于无线环境，也能用于有线环境。</p>
+<p>802.1X授权框架主要包括请求方，认证方、认证服务器3个要素。<br>请求方， 要求身份验证并访问网络资源的主机。 通常是手机或平板。<br>认证方， 允许或拒绝流量通过其端口的设备。 通常是接入点或无线局域网控制器。<br>认证服务器， 验证请求方提供的凭证，并将请求方是否获得授权的结果通知认证方。认证服务器一般是 RADIUS服务器。</p>
+<p>802.1X/EAP帧交换过程</p>
+<p>请求方—————————————-认证方——————————————认证服务器</p>
 <ol>
-<li>shell script 首行语法</li>
-<li>shell 的注释方法及script的代码规范一般形式</li>
-<li>shell 条件语句</li>
-<li>shell scprit中调用另外一个shell script.</li>
-<li>while 循环</li>
-<li>获取系统参数并保存变量，变量计数</li>
-<li>输出重定向及文件名创建编号。</li>
-<li>终端断开不杀脚本的方法</li>
-<li>Wi-Fi的连接操作等</li>
+<li>802.11关联请求 ———————-&gt;    ———-受控端口和非受控端口关闭—-</li>
+<li>EAPO-start —————————&gt;    ————受控端口和非受控端口关闭—</li>
+<li>EAP-request/identity&lt;————-    ————非受控端口开启—————-</li>
+<li>EAP-response/identity————-&gt; 5. RAIDUS-access-request————-&gt;</li>
+<li>EAP-challenge request&lt;————- 6. RADIUS-access-challenge———-&gt;</li>
+<li>EAP-challenge response————-&gt;9. RADIUS-access-request————-&gt;</li>
+<li>EAP-success&lt;—————————10. RADIUS-access-accept&lt;—————</li>
+<li>创建动态加密密钥的四次握手&lt;——-&gt;</li>
+<li>受控端口开启，允许访问网络。</li>
 </ol>
-<p>主shell script.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#ISSUE i simulation script.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#Objects:Try to simulate the Wi-Fi interaction sequence to accelerate issue reproduce</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">Use method:</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1. Make sure the Wi-Fi is <span class="built_in">enable</span> when board power on.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">2. adb push issue-i-test-tool /data/<span class="built_in">test</span>/</span></span><br><span class="line"><span class="meta">#</span><span class="bash">3. adb shell</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">4. <span class="built_in">cd</span> /data/<span class="built_in">test</span>/</span></span><br><span class="line"><span class="meta">#</span><span class="bash">5. nohup sh issue_i_simulate_script.sh &amp;</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">Stop Android framework</span></span><br><span class="line">stop</span><br><span class="line"></span><br><span class="line">rm -rf /data/dump_*</span><br><span class="line">cp ./hostapd_ap0.conf /data/vendor/wifi/hostapd/hostapd_ap0.conf</span><br><span class="line">chown wifi:wifi /data/vendor/wifi/wpa/wpa_supplicant.conf</span><br><span class="line">chown wifi:wifi /data/vendor/wifi/hostapd/hostapd_ap0.conf</span><br><span class="line"></span><br><span class="line">dmesg -C</span><br><span class="line">ERR_NUM=0</span><br><span class="line">NUM=0</span><br><span class="line">if [ -e /data/test/kernel_log ]; then</span><br><span class="line">   rm -rf /data/test/kernel_log/*</span><br><span class="line">   echo &quot;kernel_log dir exitst&quot;</span><br><span class="line">else</span><br><span class="line">    mkdir -p /data/test/kernel_log/</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;######## statrt new simulation #########&quot;</span><br><span class="line"></span><br><span class="line">while true</span><br><span class="line">do</span><br><span class="line">    echo &quot;######## statrt new simulation #########&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">    #Load 8997 driver</span><br><span class="line">    #insmod mlan.ko</span><br><span class="line">    #insmod moal.ko drv_mode=3 sta_name=wlan0 uap_name=ap cal_data=none cfg80211_wext=0xf fw_name=nxp/sdiouart_combo.bin</span><br><span class="line">    </span><br><span class="line">    #ifconfig wlan0 up</span><br><span class="line">    </span><br><span class="line">    ##Start wpa_supplicant</span><br><span class="line">    #/vendor/bin/hw/wpa_supplicant -Dnl80211 -iwlan0 -c/data/vendor/wifi/wpa/wpa_supplicant.conf &amp;</span><br><span class="line">    #start wpa_supplicant</span><br><span class="line">    wpa_cli -i wlan0 disconnect</span><br><span class="line"></span><br><span class="line">    ##Set driver and FW debug level</span><br><span class="line">    mlanutl wlan0 drvdbg 0x800FF</span><br><span class="line">	sleep 1</span><br><span class="line"><span class="meta">	#</span><span class="bash"><span class="comment">#Set driver and FW debug level</span></span></span><br><span class="line">    mlanutl ap0 drvdbg 0x800FF</span><br><span class="line">    #cat /proc/kmsg &gt; ./kernel_log/kernel_log.txt &amp;</span><br><span class="line">    echo &quot;Set drvdbg 0x800FF and capture kernel log.&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">    </span><br><span class="line">    ##Start scan every 10 seconds</span><br><span class="line">    sh /data/test/cycle_scan.sh $NUM &amp;</span><br><span class="line">    </span><br><span class="line">    ##Start AP</span><br><span class="line">    ##hostapd hostap.conf</span><br><span class="line">    echo &quot;------START SOFT AP-----&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">    start hostapd</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    media_state=$(cat /proc/mwlan/adapter0/wlan0/info  | grep -i media_state | cut -b 14-22)</span><br><span class="line">    echo &quot;$media_state&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">    </span><br><span class="line">    NUM_CONNECT=0</span><br><span class="line">    ##Connect remote ap specified by ssid</span><br><span class="line">    while true</span><br><span class="line">    do</span><br><span class="line">        #wpa_cli -i wlan0 remove_net all</span><br><span class="line">        #wpa_cli -i wlan0 flush</span><br><span class="line">        #wpa_cli -i wlan0 add_network</span><br><span class="line">        #wpa_cli -i wlan0 set_network 0 ssid &#x27;&quot;SSID&quot;&#x27;</span><br><span class="line">        #wpa_cli -i wlan0 set_network 0 key_mgmt NONE</span><br><span class="line">        #wpa_cli -i wlan0 set_network 0 proto WPA2</span><br><span class="line">        #wpa_cli -i wlan0 set_network 0 pairwise GCMP-256 CCMP TKIP</span><br><span class="line">        #wpa_cli -i wlan0 set_network 0 group GCMP-256 CCMP TKIP</span><br><span class="line">        #wpa_cli -i wlan0 set_network 0 psk &#x27;&quot;password&quot;&#x27;</span><br><span class="line">        wpa_cli -i wlan0 select_network 0</span><br><span class="line">    	</span><br><span class="line">        sleep 5</span><br><span class="line">        media_state=$(cat /proc/mwlan/adapter0/wlan0/info  | grep -i media_state | cut -b 14-22)</span><br><span class="line">        if [ &quot;$media_state&quot; == &quot;Disconnec&quot; ]; then</span><br><span class="line">            let NUM_CONNECT+=1</span><br><span class="line">            echo &quot;Try to connect again.NUM_CONNECT is $NUM_CONNECT&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">        else</span><br><span class="line">            echo &quot;-----Connect success.-----&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">    	    break</span><br><span class="line">        fi</span><br><span class="line">    </span><br><span class="line">        if [ $NUM_CONNECT -gt 4 ]; then</span><br><span class="line">            echo &quot;Stop connect NUM_CONNECT is $NUM_CONNECT&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">            break</span><br><span class="line">        else</span><br><span class="line">            echo &quot;Continue connect&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">        fi</span><br><span class="line"></span><br><span class="line">        sleep 8</span><br><span class="line">    done</span><br><span class="line">    </span><br><span class="line">    ##DHCP</span><br><span class="line">    </span><br><span class="line">    #dhclient -i wlan0</span><br><span class="line">    </span><br><span class="line"><span class="meta">	#</span><span class="bash">Add some traffic</span></span><br><span class="line">	iperf -c &lt;IP&gt; -i 1 -t 10</span><br><span class="line">	</span><br><span class="line">    sleep 5</span><br><span class="line"></span><br><span class="line">    ##Stop AP</span><br><span class="line">    echo &quot;-----STOP AP-----&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">    stop hostapd</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">	#</span><span class="bash">Add some traffic</span></span><br><span class="line">	iperf -c &lt;IP&gt; -i 1 -t 10</span><br><span class="line"></span><br><span class="line">    i=1</span><br><span class="line">    while(($i&lt;6))</span><br><span class="line">    do</span><br><span class="line">	mlanutl wlan0 verext 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">        echo &quot;get verext info&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">        #echo &quot;get verext info&quot; </span><br><span class="line">	sleep 2</span><br><span class="line">        i=$(($i+1))</span><br><span class="line">    done</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    dmesg &gt; kernel_log/kernel_log.txt</span><br><span class="line"> </span><br><span class="line">    driver_state=$(cat /proc/mwlan/adapter0/wlan0/debug | grep -i driver_state | cut -b 14)</span><br><span class="line">    echo &quot;$driver_state&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line"></span><br><span class="line">    ##Dump FW log</span><br><span class="line">    if [ -e /data/dump_*/file_sdio_DUMP ]; then</span><br><span class="line">        echo &quot;DUMP success&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">        killall cycle_scan.sh</span><br><span class="line">        break</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    if [ $driver_state != 0 ]; then</span><br><span class="line">        echo &quot;debug_dump&quot; &gt; /proc/mwlan/adapter0/wlan0/config</span><br><span class="line">		killall cycle_scan.sh</span><br><span class="line">        break</span><br><span class="line">    else</span><br><span class="line">        killall cycle_scan.sh</span><br><span class="line">        #rm -rf /data/test/kernel_log/kernel_log_$NUM.txt</span><br><span class="line">        rm -rf /data/test/kernel_log/script_log_$NUM.txt</span><br><span class="line">        let NUM+=1</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    echo &quot;Continue utimost circle.&quot;</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<p>被上面的script调用</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">This script is used to trigger cycle scan</span></span><br><span class="line">ERR_NUM=0</span><br><span class="line">NUM=0</span><br><span class="line">LOGNUM=$1</span><br><span class="line"></span><br><span class="line">while true</span><br><span class="line">do</span><br><span class="line">    scan_result=$(wpa_cli -i wlan0 scan)</span><br><span class="line">    if [ &quot;$scan_result&quot; != &quot;OK&quot; ]; then</span><br><span class="line">		echo &quot;scan FAIL&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$LOGNUM.txt</span><br><span class="line">        ERR_NUM=$[$ERR_NUM + 1]</span><br><span class="line">    else</span><br><span class="line">        echo &quot;scan OK&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$LOGNUM.txt</span><br><span class="line">        ERR_NUM=0</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    if [ $ERR_NUM -gt 10 ]; then</span><br><span class="line">        echo &quot;Continuos scan ERR_NUM is $ERR_NUM&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$LOGNUM.txt</span><br><span class="line">        break</span><br><span class="line">    fi</span><br><span class="line"></span><br><span class="line">    echo &quot;scan NUM is $NUM&quot; 2&gt;&amp;1 &gt;&gt; /data/test/kernel_log/script_log_$LOGNUM.txt</span><br><span class="line">    let NUM+=1</span><br><span class="line">    sleep 8</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>802.1X框架与EAP相互协作，提供验证用户和设备身份以及授权客户端访问网络资源的必要机制。</p>
+<p>动态密钥的优点：</p>
+<ol>
+<li>不会受到社会工程学的攻击</li>
+<li>每位用户有一把不同且唯一的密钥。</li>
+</ol>
+<p><strong>四次握手</strong></p>
+<p>请求方————————————————————————————————认证方<br>PMK已知———————————————————————————————-PMK已知<br>生成SNonce——————————————————————————————生成ANonce<br>Message 1: EAPOL-Key(ANonce, Unicast)&lt;—————————————————<br>派生PTK<br>Message 2: EAPOL-Key(SNonce, Unicast, MIC)——————————————-&gt;<br>———————————————————————————————————派生PTK，如果需要则生成GTK<br>Message 3: EAPOL-Key(Install PTK, Unicast, MIC, Encrypted GTK)&lt;————-<br>Message 4: EAPL-Key(Unicast, MIC)———————————————————&gt;<br>安装PTK和GTK—————————————————————————————-安装PTK</p>
+<p>最终的密钥为成对瞬时密钥（PTK）和组临时密钥（GTK）。PTK用于加密解密单播流量；GTK用于加密解密广播和多播流量。</p>
+<p>TKIP加密是正对WEP的加强版；CCMP加密优于TKIP；GCMP是更新的加密方式，无法向后兼容，接入点和客户端需要升级硬件。</p>
+
       
 
       
@@ -575,7 +928,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Shell script</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
         		</li>
       		
 		</ul>
@@ -585,7 +938,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/15/Linux-shell-script-%E5%AE%9E%E8%B7%B5%E8%AE%B0%E5%BD%95-%E4%B8%80/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/02/28/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%8C/">展开全文 >></a>
         </p>
       
 
@@ -615,20 +968,20 @@
 
 
   
-    <article id="post-CWNA-802-11-MAC-体系结构-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CWNA-无线局域网安全体系结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/15/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%8C/">CWNA:802.11 MAC 体系结构(二)</a>
+      <a class="article-title" href="/2022/02/25/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">CWNA:无线局域网安全体系结构</a>
     </h1>
   
 
         
-        <a href="/2022/02/15/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2022-02-15T02:03:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-15</time>
+        <a href="/2022/02/25/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="archive-article-date">
+  	<time datetime="2022-02-25T08:22:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-25</time>
 </a>
  
 
@@ -637,86 +990,53 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="802-11-MAC-帧头"><a href="#802-11-MAC-帧头" class="headerlink" title="802.11 MAC 帧头"></a>802.11 MAC 帧头</h3><p>MAC帧头属于二层信息，二层信息没有加密，可以通过协议分析仪查看内容。<br>MAC帧头由9个字段构成，4个字段用于寻址，5个字段用于控制</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">帧控制</th>
-<th style="text-align:center">持续时间/ID</th>
-<th style="text-align:center">地址1</th>
-<th style="text-align:center">地址2</th>
-<th style="text-align:center">地址3</th>
-<th style="text-align:center">序列控制</th>
-<th style="text-align:center">地址4</th>
-<th style="text-align:center">QoS控制</th>
-<th style="text-align:center">HT控制</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">2字节</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">6</td>
-<td style="text-align:center">0 or 6</td>
-<td style="text-align:center">0 or 6</td>
-<td style="text-align:center">0 or 2</td>
-<td style="text-align:center">0 or 6</td>
-<td style="text-align:center">0 or 2</td>
-<td style="text-align:center">0 or 4</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>帧控制字段</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">协议版本</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">子类型</th>
-<th style="text-align:center">发往DS</th>
-<th style="text-align:center">来自DS</th>
-<th style="text-align:center">更多分片</th>
-<th style="text-align:center">重试</th>
-<th style="text-align:center">电源管理</th>
-<th style="text-align:center">更多数据</th>
-<th style="text-align:center">受保护帧</th>
-<th style="text-align:center">+HTC/顺序</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">4</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>目前协议版本只有一种，值为0<br>帧类型四种：<br>管理帧（00）， 发现接入点并加入基本服务集<br>控制帧（01）， 确认传输成功并保留无线介质<br>数据帧（10）， 携带上层MSDU净荷<br>扩展帧（11）， 一种新的灵活帧格式，仅用于802.11ad</p>
-<p>由于帧类型多，类型和子类型字段共同决定帧类型，具体子类型可以抓控制包查看。</p>
-<p>重试字段，802.11 MAC帧头中最重要的字段之一。<br>0：表示首次传输<br>1：表示重传<br>可以通过重试字段设置为1的管理帧和数据帧计算二层重传率。</p>
-<p>受保护帧字段，标识数据帧的MSDU净荷是否加密。<br>0：未加密<br>1：加密</p>
-<p><strong>持续时间/ID字段</strong><br>多数情况，持续时间字段用于虚载波监听，用来设置NAV的倒数计数器；<br>个别情况，遗留的电源管理，客户端利用节电轮询帧的持续时间/ID向接入点通过电源管理状态。</p>
-<p><strong>MAC 寻址</strong><br>MAC地址分为两类：<br>单地址，分配给网络中唯一终端的地址<br>组地址，一个和多个终端使用的目的地址<br>多播地址，上层实体用于定义终端逻辑组的地址<br>广播地址，FF:FF:FF:FF:FF:FF</p>
-<p>MAC地址6字节：<br>前三个字节，组织唯一标识符（OUI)<br>后三个字节，扩展标识符</p>
-<p>源地址（SA)，原发终端的MAC地址；<br>目的地址(DA)，二层帧最终目的地的MAC地址；<br>发射机地址(TA)，发送端802.11无线接口的MAC地址<br>接收机地址(RA)，接收端802.11无线接口的MAC地址</p>
-<p><strong>发往DS和来自DS字段</strong><br>00  常用于管理帧和控制帧<br>01  表示接入点向客户端发送802.11数据帧（下行传输）<br>10  表示客户端向接入点发送802.11数据帧（上行传输）<br>11  表示使用无线分布系统，需要4个地址，源和目的通过中间的发送和接收转接。</p>
-<p><strong>序列控制字段</strong><br>两字节，在802.11 MSDU分片时使用。<br>分片总是在帧突发中传输，较小分片会降低数据吞吐量。<br>支持帧聚合和块确认的802.11n/ac网络不需要分片机制。</p>
-<p><strong>Qos控制字段</strong><br>2字节，仅有Qos数据帧的帧头使用该字段。</p>
-<p><strong>HT控制字段</strong><br>用于802.11n/ac发射机和接收机的链路自适应、发射波束成形等高级功能。</p>
-<h3 id="802-11-MAC-帧体"><a href="#802-11-MAC-帧体" class="headerlink" title="802.11 MAC 帧体"></a>802.11 MAC 帧体</h3><p>控制帧没有帧体。<br>802.11管理帧又称MAC管理协议数据单元（MMPDU），不携带任何上层信息。帧体包含二层信息字段和信息原始。帧体没有加密。<br>数据帧，携带上层信息，可以通过加密来保护。<br>null data的数据帧也没有帧体。特殊功能。</p>
-<h3 id="802-11-MAC-帧尾"><a href="#802-11-MAC-帧尾" class="headerlink" title="802.11 MAC 帧尾"></a>802.11 MAC 帧尾</h3><p>携带整个帧数据完整性校验信息。<br>帧校验失败，将导致帧重传。</p>
+        <p>无线局域网安全基础知识</p>
+<blockquote>
+<p>数据隐私与完整性<br>身份验证、授权与记账<br>分段<br>监控与策略</p>
+</blockquote>
+<p>遗留安全机制</p>
+<blockquote>
+<p>遗留的身份验证机制<br>静态WEP加密<br>MAC过滤<br>SSID隐藏</p>
+</blockquote>
+<p>强健安全机制</p>
+<blockquote>
+<p>强健安全网络<br>身份验证与授权<br>预共享密钥身份验证<br>专有的预共享密钥身份验证<br>对等实体同时验证<br>802.1X/EAP框架<br>EAP类型<br>动态加密密钥生成<br>四次握手<br>无线局域网加密<br>TKIP加密<br>CCMP加密<br>CGMP加密</p>
+</blockquote>
+<p>流量分段</p>
+<blockquote>
+<p>虚拟局域网<br>基于角色的访问控制</p>
+</blockquote>
+<p>WPA3</p>
+<p>虚拟专用网安全</p>
+<blockquote>
+<p>VPN基础知识<br>三层VPN<br>SSL VPN<br>VPN部署</p>
+</blockquote>
+<h3 id="无线局域网安全基础知识"><a href="#无线局域网安全基础知识" class="headerlink" title="无线局域网安全基础知识"></a>无线局域网安全基础知识</h3><p>考虑射频信号传输的无缚性和开放性，为确保数据隐私，采用强有力的加密机制必不可少。</p>
+<p><strong>数据隐私与完整性</strong><br>在计算机行业中，将明文转换为密文的过程通常称为加密。<br>将密文还原称明文的过程称为解密。</p>
+<p>ARC4算法是一种流密码。<br>AES算法安全性优于ARC4流密码的分组密码。</p>
+<p>WEP采用完整性校验值（ICV）<br>TKIP采用消息完整性校验（MIC）<br>CCMP采用消息完整性校验（MIC），不过安全性由于TKIP或WEP的数据完整性机制。</p>
+<p><strong>身份验证、授权与记账（AAA）</strong><br>身份验证，验证身份和凭证是否有效。</p>
+<p>授权，决定是否给予用户或设备访问网络资源的权限。</p>
+<p>记账，跟踪用户或设备使用网络资源的情况。</p>
+<p><strong>分段</strong><br>目的是在网络中分隔用户流量。<br>分段能结合基于角色的访问控制使用。</p>
+<p><strong>监控与策略</strong><br>监控无线网络的性能；<br>监控无线网络的攻击和入侵。</p>
+<h3 id="遗留安全机制"><a href="#遗留安全机制" class="headerlink" title="遗留安全机制"></a>遗留安全机制</h3><p>遗留的安全机制早已破解。</p>
+<p><strong>遗留的身份验证机制</strong><br>802.11原始标准定义了两种身份验证机制：开放系统身份验证  和  共享密钥身份验证。</p>
+<p>遗留的身份验证机制与其说是验证用户身份，不如说是验证功能，其目的是确定两台设备是否为合法的802.11设备。</p>
+<p>共享密钥身份验证采用WEP验证客户端都能通过验证，并关联到接入点后获得网络资源的访问权限，需要4次身份验证帧：<br>1）客户端向接入点发送身份验证请求帧；<br>2）接入点向客户端发送包含明文质询消息的身份验证响应帧；<br>3）客户端加密明文质询消息，将其封装到另一个身份验证请求帧并发生给接入点。<br>4）接入点解密客户端质询消息，并与原质询消息比较。<br>如果二者匹配，验证成功；<br>如果二者不匹配，拒绝客户端的身份验证请求。</p>
+<p>安全隐患：任何人只有截获接入点的明文质询消息以及客户端返回的加密质询消息，就可能提取静态WEP密钥。攻击者一旦破解WEP密钥，<br>就可以之间破解数据帧并之间访问网络，网络将无密码可言。</p>
+<p><strong>静态WEP加密</strong><br>WEP旨在实现3个目标：<br>机密性，在传输前加密数据以提供隐私性。<br>访问控制，一种简单的授权形式。<br>数据完整性，加密前需要计算数据完整性和（ICV），防止数据遭到篡改。</p>
+<p>64位WEP称为WEP-40, 由40位静态密钥和24位初始化向量构成。 由10个16进制或5个ASCII字符构成。<br>128位WEP称为WEP-104, 由104位静态密钥和24位出生向量构成。由26个16进制或13个ASCII字符构成。</p>
+<p>客户端和接入点最多能配置4把独立的静态WEP密钥，用户可选择一把作为默认的静态密钥。 可以采用不同的密钥分别加密发送流量和接收流量。</p>
+<p>WEP存在大量安全隐患，4种主要的攻击：<br>IV冲突攻击， 由于24位的IV以明文形式传输且每一帧的IV都不同，如果采用WEP加密的流量大，那么IV在一定时间内必定重复。如果冲突发送，攻击者很容易破解密钥。</p>
+<p>弱密钥攻击， ARC4会生成一部分弱IV密钥。通过恢复已知的弱IV密钥，攻击者很容易破解密码。</p>
+<p>回注攻击， 对流量较少的网络，攻击者利用黑客工具发动数据包回注攻击，以加快收集弱IV密钥的速率。</p>
+<p>比特翻转攻击， ICV数据完整性校验安全性较差，经过WEP加密的数据包可能遭到篡改。</p>
+<p><strong>MAC过滤</strong><br>每块网卡有唯一的物理地址，MAC地址。<br>所有的MAC过滤都是特定于供应商的。<br>MAC地址可以欺骗或假冒。</p>
+<p>由于MAC地址容易遭到欺骗且配置MAC过滤器比较烦琐，因此MAC过滤并非包含企业无线网的可靠手段。</p>
+<p><strong>SSID隐藏</strong><br>多少接入点提供封闭网络，隐藏SSID或隐身模式的设置，启用后就能隐藏无线网络的名称。 这时信标帧的SSID字段位空。</p>
+<p>启用封闭网络的接入点仍然会响应发送定向探询请求帧（包含特定SSID）的客户端。如此一来，合法的用户仍然可以通过身份验证并关联到接入点，<br>而没有配置正确SSID的客户端无法通过身份验证或关联到客户端。</p>
+<p>只有使用合适的工具，通常只需要几秒的时间就可以发送隐藏的SSID。强烈建议不要隐藏SSID。</p>
 
       
 
@@ -740,7 +1060,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/15/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84-%E4%BA%8C/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/02/25/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">展开全文 >></a>
         </p>
       
 
@@ -770,20 +1090,20 @@
 
 
   
-    <article id="post-CWNA-802-11-MAC-体系结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CWNA-无线攻击、入侵监控与安全策略" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/14/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">CWNA:802.11 MAC 体系结构</a>
+      <a class="article-title" href="/2022/02/25/CWNA-%E6%97%A0%E7%BA%BF%E6%94%BB%E5%87%BB%E3%80%81%E5%85%A5%E4%BE%B5%E7%9B%91%E6%8E%A7%E4%B8%8E%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/">CWNA:无线攻击、入侵监控与安全策略</a>
     </h1>
   
 
         
-        <a href="/2022/02/14/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2022-02-14T07:25:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-14</time>
+        <a href="/2022/02/25/CWNA-%E6%97%A0%E7%BA%BF%E6%94%BB%E5%87%BB%E3%80%81%E5%85%A5%E4%BE%B5%E7%9B%91%E6%8E%A7%E4%B8%8E%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/" class="archive-article-date">
+  	<time datetime="2022-02-25T02:20:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-25</time>
 </a>
  
 
@@ -792,48 +1112,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>包、帧与比特<br>数据链路层</p>
+        <p>无线攻击</p>
 <blockquote>
-<p>MAC服务数据单元<br>MAC协议数据单元 </p>
+<p>非法无线设备<br>对等攻击<br>窃听<br>加密破解<br>KRACK攻击<br>身份验证攻击<br>MAC欺骗<br>管理界面漏洞<br>无线劫持<br>拒绝服务攻击<br>特定于供应商的攻击<br>社会工程学攻击</p>
 </blockquote>
-<p>物理层</p>
+<p>入侵监控</p>
 <blockquote>
-<p>PLCP服务数据单元<br>PLCP协议数据单元</p>
+<p>无线入侵防御系统<br>非法设备检测与抑制<br>频谱分析仪</p>
 </blockquote>
-<p>802.11与802.3互操作性<br>802.11 MAC 帧头</p>
+<p>无线安全策略</p>
 <blockquote>
-<p>帧控制字段<br>持续时间/ID字段<br>MAC寻址<br>序列控制字段<br>QoS控制字段<br>HT控制字段</p>
+<p>一般性安全策略<br>功能性安全策略<br>法律合规性<br>无线局域网安全策略建议</p>
 </blockquote>
-<p>802.11帧体<br>802.11帧尾<br>802.11状态机<br>管理帧</p>
-<blockquote>
-<p>信标帧<br>身份验证帧<br>关联帧<br>重关联帧<br>取消关联帧<br>接触身份验证帧<br>行动帧</p>
-</blockquote>
-<p>控制帧</p>
-<blockquote>
-<p>确认帧<br>块确认帧<br>节电轮询帧<br>RTS/CTS<br>CTS-to-Self<br>保护机制</p>
-</blockquote>
-<p>数据帧</p>
-<blockquote>
-<p>Qos数据帧与非Qos数据帧<br>不携带数据的数据帧</p>
-</blockquote>
-<p>电源管理</p>
-<blockquote>
-<p>遗留的电源管理机制<br>WMM节电与非调度自动节电传输<br>MIMO电源管理机制</p>
-</blockquote>
-<h3 id="包、帧与比特"><a href="#包、帧与比特" class="headerlink" title="包、帧与比特"></a>包、帧与比特</h3><p>对于802.11通信而言，主要目标就是在计算机设备之间传输用户数据。<br>当数据在计算机中处理完毕并准备从一台计算机发送到另一台计算机时，数据从OSI模型的上层向下传递至物理层，最终经由物理层传输给其他设备。<br>网络三层数据称为包<br>网络二层数据称为帧<br>物理层数据称为比特，数据最终以单比特的形式传输。比特是值为0或1的二进制数字，二进制数字是数字通信的基础。</p>
-<h3 id="数据链路层（网络二层）"><a href="#数据链路层（网络二层）" class="headerlink" title="数据链路层（网络二层）"></a>数据链路层（网络二层）</h3><p>包含两个子层：<br>802.2逻辑链路控制子层（LLC),所有802网络具有相同的LLC子层结构；<br>介质访问子层（MAC子层）， 802.11无线局域网通信位于MAC子层。</p>
-<p><strong>MAC服务数据单元</strong><br>网络层将数据发送给数据链路层，数据在LLC子层后称为MAC服务数据单元（MSDU), 它有LLC子层以及第三~第七层信息构成。<br>802.11有3种主要的帧类型。<br>802.11管理帧和控制帧 不携带上层信息，<br>802.11数据帧携带MSDU净荷。</p>
-<p>MSDU最大长度为2304字节，帧体的最大长度有MSDU最大长度与加密开销决定。</p>
-<p>2009年获批的802.11n引入 聚合MAC服务数据单元（A-MSDU)的概念。 A-MSDU最大长度（3839或7935）</p>
-<p><strong>MAC协议数据单元</strong><br>LLC子层向MAC子层发送MSDU时，将添加MAC帧头信息，封装后的MSDU称为MAC协议数据单元（MPDU），也就是802.11帧。</p>
-<p>MPDU = MAC帧头 + 帧体 + 帧校验序列<br>MAC帧头： 帧控制、持续时间、MAC寻址、序列控制、Qos控制、HT控制等信息。<br>帧头： MSDU净荷在其中<br>帧校验序列： FCS包括32为循环容易校验，用于验证帧的完整性。</p>
-<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>分为两个子层：<br>物理层会聚过程子层（PLCP）<br>物理介质相关子层（PMD）</p>
-<p>MAC子层向 PLCP子层发送帧， PLCP子层创建 PLCP协议数据单元（PPDU）以便传输，PMD子层随后会调制数据并以比特形式发送出去。</p>
-<p><strong>PLCP服务数据单元</strong><br>PLCP服务数据单元（PSDU）是物理层对MPDU的称谓。</p>
-<p><strong>PLCP协议数据单元</strong><br>PPDU = 前同步码 + 物理层头部 + PSDU</p>
-<p>信息在各层之间流动的过程</p>
-<p>网络层（网络三层）<br>——————————————————————————————————————————————————————————————————————————————————————<br>数据链路层（第二层） LLC子层——————MSDU（第三~第七层数据）————————LLC子层</p>
-<p>————————— MAC子层——————MSDU封装在MPDU中———————————MAC子层<br>——————————————————-添加或删除MAC帧头与帧尾<br>——————————————————————————————————————————————————————————————————————————————————————<br>物理层（第一层）—- PLCP子层—————-PSDU封装在 PPDU中——————————-PLCP子层<br>————————————————-添加或删除前同步码与物理层头部<br>————————— PMD子层—————-数据以比特形式传输———————————PMD子层</p>
+<h3 id="无线攻击"><a href="#无线攻击" class="headerlink" title="无线攻击"></a>无线攻击</h3><p><strong>非法无线设备</strong><br>它是某种不安全的开发网关，入侵者可以借此进入企业希望保护的有线基础设施。<br>大多数情况下，安装非法接入点的并非黑客，而是企业员工。<br>自组织网络也可能充当入侵企业网络的跳板。</p>
+<p><strong>对等攻击</strong><br>客户端隔离，可以用于防止对等攻击。</p>
+<p><strong>窃听</strong><br>有随意窃听和恶意窃听两种方式。<br>随意窃听，通过扫描获取周边无线网络信息。<br>恶意窃听，通过802.11协议分析仪捕获无线通信以获取隐私数据。</p>
+<p><strong>加密破解</strong><br>有线等效保密（WEP）是一种多年前就已遭到破解的802.11加密机制，互联网上有免费的破解工具可以快速破解。</p>
+<p><strong>KRACK攻击</strong><br>针对WPA2协议中用于动态生成加密密钥的四次握手过程攻击，已经被新的固件修复。</p>
+<p><strong>身份验证攻击</strong><br>如果攻击前获取WPA/WPA2密码短语并捕获四次握手过程，就能重新生成动态加密密钥，进而进行流量解密。</p>
+<p><strong>MAC欺骗</strong><br>MAC地址过滤是一种安全方式，但是可以MAC地址欺骗的方式绕过这种安全机制。应采用多种安全方案体系。</p>
+<p><strong>无线劫持</strong><br>无线劫持（wireless hijacking)又称双面恶魔攻击(evil twin attack)，步骤如下：<br>攻击者创建相同SSID但不同信道的接入点；<br>攻击者阻塞目标热点信道，迫使目标客户端漫游到自己创建的热点，实现二层劫持；<br>攻击者热点为客户端分配DCHCP IP；<br>攻击者热点桥接到自己的第二个无线接口；<br>第二个无线接口接入原目标热点，这样就实现了在客户端和原目标热点之间传入攻击者设备。</p>
+<p>无线劫持的另一种形式称为Wi-Fi网络钓鱼攻击。</p>
+<p>唯一能阻止无线劫持的途径是部署相互身份验证解决方案802.1X/EAP。</p>
+<p><strong>拒绝服务攻击</strong><br>利用合适的工具阻止合法用户访问网络资源，从而在一段时间内瘫痪无线局域网。<br>主要是在物理层和数据链路层发起攻击。<br>频谱分析仪和协议分析仪是检测攻击的最佳工具。</p>
+<p><strong>社会工程学攻击</strong><br>一种诱使用户泄漏机密信息的技术，阻止社会工程学攻击的最后方法是严格贯彻安全策略，以防止机密外泄。</p>
 
       
 
@@ -857,392 +1159,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/14/CWNA-802-11-MAC-%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CWNA-802-11介质访问（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/14/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%EF%BC%88%E4%BA%8C%EF%BC%89/">CWNA:802.11介质访问（二）</a>
-    </h1>
-  
-
-        
-        <a href="/2022/02/14/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2022-02-14T02:00:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-14</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="点协调功能"><a href="#点协调功能" class="headerlink" title="点协调功能"></a>点协调功能</h3><p>PCF是一种可选的介质访问方法，IEEE认为PCF已经过时，可能今后会将其删除。</p>
-<h3 id="混合协调功能"><a href="#混合协调功能" class="headerlink" title="混合协调功能"></a>混合协调功能</h3><p>定义服务质量的802.11e增加了混合协调功能。<br>HCF将DCF和PCF功能相结合并加以改进，定义了两种信道访问方法：增强型分布式信道访问（EDCA）和HCF受控信道访问（HCCA)<br>前面的DCF和PCF介质争用机制只允许802.11无线接口传输单个帧。<br>HCF定义的机制允许802.11无线接口通过射频介质传输多个帧。当兼容HCF的无线接口争用介质时，无线接口将获得帧发送时间，这段时间称为发送机会（TXOP）。<br>在此期间，802.11无线接口可以通过帧突发（frame burst)发送多个帧，帧之间通过SIFS隔开，以确保其他无线接口不会在帧突发期间占用介质。</p>
-<p><strong>增强型分布式信道访问</strong><br>提供差异化访问的无线介质访问方法，能将流量定向到4种访问类别的QoS优先级队列。优先级标记提供了在MAC子层实现QoS的机制。<br>EDMAC基于8个用户优先级字段定义了4种访问类别，优先级从低到高：<br>AC_BK(背景)<br>AC_BE（尽力而为)<br>AC_VI(视频)<br>AC_VO(语音)</p>
-<p>每种访问类别经过改进的增强型分布式信道访问功能争用介质。拥有高优先级的帧具有最小退避值，因此机会更多。</p>
-<p><strong>HCF受控信道访问</strong><br>内置在接入点中，具有更高的无线介质访问优先级。</p>
-<h3 id="Wi-Fi-多媒体"><a href="#Wi-Fi-多媒体" class="headerlink" title="Wi-Fi 多媒体"></a>Wi-Fi 多媒体</h3><p>语音，音频，视频等应用流量对延迟和抖动的容忍度较低，需要比标准数据流量更高的优先级。<br>WMM基于EDCA机制，因此以太网的802.1D优先级标记用于将流量定向到4种访问类别的优先级队列。</p>
-<h3 id="占用时长公平性"><a href="#占用时长公平性" class="headerlink" title="占用时长公平性"></a>占用时长公平性</h3><p>由于存在高速设备和低速设备争用无线介质会导致低速设备占用较多传输时长，<br>占用时长公平性，使得高数设备和低速设备有均等的时长，而非均等的机会。这样高速设备能够更多机会访问介质，最终提升无线局域网的性能、容量和吞吐量。<br>它致力于避免速度较慢设备影响网络的整体性能。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/14/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%EF%BC%88%E4%BA%8C%EF%BC%89/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CWNA-802-11介质访问" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/10/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE/">CWNA:802.11介质访问</a>
-    </h1>
-  
-
-        
-        <a href="/2022/02/10/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE/" class="archive-article-date">
-  	<time datetime="2022-02-10T05:37:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-10</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>CSMA/CA与 CSMA/CD<br>冲突检测<br>分布式协调功能</p>
-<blockquote>
-<p>物理载波监听<br>虚拟载波监听<br>伪随机退避计时器<br>帧间间隔</p>
-</blockquote>
-<p>点协调功能<br>混合协调功能</p>
-<blockquote>
-<p>增强型分布式信道访问<br>HCF受控信道访问</p>
-</blockquote>
-<p>Wi-Fi多媒体<br>占用时长公平性</p>
-<h3 id="CSMA-CD-与-CSMA-CA"><a href="#CSMA-CD-与-CSMA-CA" class="headerlink" title="CSMA/CD 与 CSMA/CA"></a>CSMA/CD 与 CSMA/CA</h3><p>802.3以太网使用带冲突检测的载波监听多路访问（CSMA/CD)的介质争用方法。<br>802.11无线局域网使用带冲突避免的载波监听多路访问（CSMA/CA）的介质争用方法。</p>
-<p><strong>CSMA/CD</strong><br>有线节点首先检查另一个节点是否在传输数据。如果其他节点没有占用以太网介质，节点将发送第一个信息比特。<br>如果没有检测到冲突，则节点继续发送其他信息比特，同时继续检测是否存在冲突。<br>如果检测到冲突，则节点计算一个随机等待时间，然后重新开始上述过程。</p>
-<p><strong>CSMA/CA</strong><br>802.11节点无法同时发送和接收数据，半双工的特性决定了采用CSMA/CA<br>终端确定其他终端没有传输数据时，802.11无线接口选择一个随机的退避值，并根据退避值等待一段额外的时间再开始传输。<br>在此期间，终端继续监听介质，确保没有其他终端开始传输。</p>
-<p>载波监听，确定介质是否繁忙；<br>多路访问，确保所有无线接口都能获得公平使用介质的机会（一次仅有一个无线接口可以传输）<br>冲突避免，任何给定时间，仅有一个无线接口能访问介质，以避免可能存在的冲突。</p>
-<h3 id="冲突检测"><a href="#冲突检测" class="headerlink" title="冲突检测"></a>冲突检测</h3><p>所有802.11单播帧必须经过确认，而广播帧和多播帧不需要确认。<br>如果无线接口没有收到确认帧，则说明传输过程中可能存在冲突。<br>确认帧相当于验证802.11单播帧是否成功交付的机制：如果无法提供交付证明，原无线接口假定传输失败并<strong>重传单播帧</strong>。</p>
-<h3 id="分布式协调功能"><a href="#分布式协调功能" class="headerlink" title="分布式协调功能"></a>分布式协调功能</h3><p>DCF是无线局域网通信的基本访问方法，而CSMA/CA过程是DCF的基础。<br>CSMA/CA协议主要包括4种机制：</p>
-<blockquote>
-<p>物理载波监听         确定无线介质是否繁忙<br>虚拟载波监听         确定无线介质是否繁忙<br>伪随机退避计时器     争用介质<br>帧间间隔            提供访问无线介质的优先级</p>
-</blockquote>
-<p>4种机制同时实施，旨在确保仅有一个802.11无线接口使用半双工介质传输数据。</p>
-<p><strong>物理载波监听</strong><br>所有没有收发数据的终端都会持续进行物理载波监听。它是监听信道，查看是否有其他射频传输占用信道。<br>确定是否存在需要终端接收的帧传输。如果介质繁忙，无线接口将尝试与传输同步。<br>确定介质在传输开始前是否繁忙。仅当介质空闲时，终端才能传输数据。</p>
-<p>802.11无线接口通过空闲信道评估（CCA)实现这个目的。它通过两种空闲信道评估阈值实现。<br><strong>信号检测阈值</strong>用于识别802.11无线接口的前同步码传输。如果接收信号高于本底噪声4dB左右，无线接口通常能解码任何收到的802.11前同部门传输。<br><strong>能量检测阈值</strong>用于在空闲信道评估期间检测其他类型的射频传输。能量检测阈值比信号检测阈值高20dB<br>只有检测到两个阈值都空闲时，才允许传输。  如何判定繁忙？这是个问题。</p>
-<p><strong>虚拟载波监听</strong><br>802.11帧头包括一个持续时间/ID字段。客户端发送单播帧时，该字段值介于0和32767之间。它表示一个活动帧交换过程所需的时间，在此期间，其他无线接口不会中断传输过程。<br>这个值用于重置其他终端的网络分配向量计时器。</p>
-<p>虚载波监听使用称为网络分配向量（NAV)的计时器机制，NAV计时器根据从前一个帧传输中观察到的持续时间值来预测介质今后的流量。</p>
-<p>工作方式：<br>监听终端在侦听到其他终端的帧传输时将查看帧头，并确定持续时间/ID字段是否包含持续时间值或ID值。如果字段中包含持续时间值，监听终端将自己的NAV计时器设置为该值，<br>然后使用NAV作为倒数计时器。在倒计时减少到0之前，终端认为射频介质处于繁忙状态。传输数据的802.11无线接口通过这个过程通知其他终端，将在一段时间（持续时间/ID)<br>值内占用介质。没有传输数据的终端，等NAV减少为0再开始争用介质的使用权。再NAV计时器到达0之前，终端无法争用介质。<br>它是一种二层载波监听机制。</p>
-<p>虚载波监听属于二层防御措施，物理载波监听属于一层防御措施。</p>
-<p><strong>伪随机退避计时器</strong><br>伪随机退避计时器是终端在传输前最后使用的计时器。退避计时器减少到0时，终端重新评估信道状态，如果信道空闲，则开始传输数据。<br>如果物理载波监听或虚拟载波监听机制发现介质繁忙，则中止递减退避计数并保持退避计数的值。退避技术减少到0时，开始传输。</p>
-<blockquote>
-<p>OFDM终端从0~15的争用窗口中选择一个随机数，假如是4<br>终端将随机数与时隙值9微妙相乘<br>如果在时隙内没有介质活动，退避计数器将减少一个时隙<br>退避计数递减至0<br>终端执行最后一次信道评估，如果空闲，开始传输。<br>如果信道繁忙，终端将推迟一个时隙，然后再次执行空闲信道评估，如果空闲，开始传输。</p>
-</blockquote>
-<p>伪随机数保证了各个终端都有机会。<br>在复杂环境中，重传的终端的伪随机退避计将越来越大，直至最大值。</p>
-<p><strong>帧间间隔</strong><br>无线帧传输之间的一段时间，共10种，时间从短到长排列</p>
-<blockquote>
-<p>缩减的帧间间隔（RIFS),优先级最高。<br>短帧帧间间隔（SIFS)，优先级第二。<br>PCF帧间间隔(PIFS)，优先级中等。<br>DCF帧间间隔(DIFS)，优先级最低<br>仲裁帧间间隔(AIFS), 由QoS终端使用<br>扩展的帧间将(EIFS)，在收到损坏的帧后使用。</p>
-</blockquote>
-<p>帧间间隔用于确定随后传输的802.11流量类型，也可以作为虚载波监听的备份机制。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/10/CWNA-802-11%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CWNA-无线局域网拓扑-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/09/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8B%93%E6%89%91-%E4%BA%8C/">CWNA:无线局域网拓扑(二)</a>
-    </h1>
-  
-
-        
-        <a href="/2022/02/09/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8B%93%E6%89%91-%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2022-02-09T05:10:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-09</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="802-11服务集"><a href="#802-11服务集" class="headerlink" title="802.11服务集"></a>802.11服务集</h3><p>IEEE802.11-2016标准定义了多种称为服务集的802.11拓扑，他们描述了无线接口相互通信的方式。包括：</p>
-<blockquote>
-<p>基本服务集（BSS）<br>扩展服务集（ESS）<br>独立基本服务集（IBSS）<br>个人基本服务集（PBSS）<br>网状基本服务集（MBSS）<br>QoS基本服务集（QBSS）</p>
-</blockquote>
-<h4 id="服务集标识符"><a href="#服务集标识符" class="headerlink" title="服务集标识符"></a>服务集标识符</h4><p>服务集标识符(SSID),用于标识802.11无线网络的逻辑名。SSID由最多32个字符组成，并且区分大小写。<br>大多数接入点提供了<strong>隐藏SSID</strong>的选项，隐藏后的网络名称只对合法的最终用户可见。<br>为了客户端的无缝漫游，接入点必须通告使用具有相同安全性配置的同一个SSID。</p>
-<h4 id="基本服务集（BSS"><a href="#基本服务集（BSS" class="headerlink" title="基本服务集（BSS)"></a>基本服务集（BSS)</h4><p>无线局域网的基础拓扑结构。通常包括一个接入点和若干客户端。<br>称为基本服务集的终端之间建立二层连接，称为相互关联。<br>多数无线局域网供应商提供了客户端隔离功能，以阻止关联到接入点的客户端之间进行对等通信。</p>
-<h4 id="基本服务区"><a href="#基本服务区" class="headerlink" title="基本服务区"></a>基本服务区</h4><p>接入点的实际覆盖区域。它是能够进行有效通信的区域。<br>由于不同客户端对RSSI的解读有所不同，可以认为基本服务区的有效范围与加入基本服务集的客户端有关。</p>
-<h4 id="基本服务集标识符"><a href="#基本服务集标识符" class="headerlink" title="基本服务集标识符"></a>基本服务集标识符</h4><p>接入点无线接口的48位（6字节）MAC地址称为基本服务集标识符(BSSID)。<br>每个基本服务集通过唯一的标识符标识，BSSID<br>BSS切换，客户端从一个基本服务集移到另一个基本服务集的漫游过程。<br>SSID是用户配置的无线局域网的逻辑名，BSSID是硬件制造商生产的无线接口的二层MAC地址。</p>
-<h4 id="多个基本服务集标识符"><a href="#多个基本服务集标识符" class="headerlink" title="多个基本服务集标识符"></a>多个基本服务集标识符</h4><p>可以通过子接口为无线接口创建多个BSSID，多BSSID在接入点无线接口原始MAC地址的基础上递增。<br>不少无线局域网供应商支持单个接入点无线接口传输多达16个SSID。SSID过多，会增大MAC子层的开销，进而影响整体性能。</p>
-<h4 id="扩展服务集"><a href="#扩展服务集" class="headerlink" title="扩展服务集"></a>扩展服务集</h4><p>如果将基本服务集比作802.11拓扑的基石，那么扩展服务集（ESS）就是由基石垒起的整栋大厦。<br>扩展服务集，由两个或多个基本服务集构成，这些基本服务集采用相同的配置，通过分布系统介质连接在一起。<br>扩展服务区，是扩展基本服务集覆盖的区域，所有客户端都能在扩展服务区内通信和漫游。<br>扩展服务集的逻辑名为 扩展服务集标识符（ESSID), 它与SSID是同义词。</p>
-<h4 id="独立基本服务集"><a href="#独立基本服务集" class="headerlink" title="独立基本服务集"></a>独立基本服务集</h4><p>IBSS仅由客户端构成，不存在接入点。<br>客户端之间直接传输帧，不会通过转发。所有客户端的帧交换都是对等的。<br>IBSS钟的所有客户端必须竞争半双工介质的使用权，且在任何给定的时间内，只有一个客户端可以传输数据。<br>为了确保通信的成功进行，IBSS中的所有客户端必须使用相同的频率信道传输数据，且构成IBSS的所有独立无线终端必须共享同一个SSID。<br>首先发起IBSS的客户端会随机生成一个MAC地址格式的BSSID，它是一个虚拟MAC地址，充当IBSS的二层标识符。</p>
-<h4 id="个人基本服务集"><a href="#个人基本服务集" class="headerlink" title="个人基本服务集"></a>个人基本服务集</h4><p>PBSS是一种支持802.11ad终端直接交换数据的802.11拓扑。只能由使用60GHz频段传输数据的802.11ad兼容无线接口创建。</p>
-<h4 id="网状基本服务集"><a href="#网状基本服务集" class="headerlink" title="网状基本服务集"></a>网状基本服务集</h4><p>802.11-2016标准定义了网状基本服务集（MBSS）<br>以无线方式分发网络流量。相当于二层路由。</p>
-<h4 id="Qos基本服务集"><a href="#Qos基本服务集" class="headerlink" title="Qos基本服务集"></a>Qos基本服务集</h4><p>WiFi联盟规定，802.11产品必须支持QoS机制才能取得WMM认证。因此，大多数基本服务集可视为QBSS</p>
-<h3 id="802-11配置模式"><a href="#802-11配置模式" class="headerlink" title="802.11配置模式"></a>802.11配置模式</h3><p><strong>接入点模式</strong> 通常称为AP<br>接入点模式，用作分布系统的入口<br>网状模式，也称中继器模式，作为无线回程无线接口使用。<br>传感器模式，又称监控模式或扫描模式，用于无线入侵防御系统体系结构中。<br>桥接模式，又称无线网桥。<br>工作组网桥模式，为连接的802.3有线客户端提供无线回程。<br>接入点被配置为客户端模式，充当客户设备，然后关联到其他接入点。</p>
-<p><strong>客户端模式</strong><br>基础设施模式（infrastructure mode），经由接入点进行通信。它是客户设备的默认模式。通常称为STA<br>自组织模式（ad hoc mode)，对等模式。 通常称为P2P</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/09/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8B%93%E6%89%91-%E4%BA%8C/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CWNA-无线局域网拓扑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/09/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8B%93%E6%89%91/">CWNA:无线局域网拓扑</a>
-    </h1>
-  
-
-        
-        <a href="/2022/02/09/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8B%93%E6%89%91/" class="archive-article-date">
-  	<time datetime="2022-02-09T01:38:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-09</time>
-</a>
- 
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="无线网络拓扑"><a href="#无线网络拓扑" class="headerlink" title="无线网络拓扑"></a>无线网络拓扑</h3><blockquote>
-<p>无线广域网<br>无线城域网<br>无线个域网<br>无线局域网</p>
-</blockquote>
-<h3 id="802-11终端"><a href="#802-11终端" class="headerlink" title="802.11终端"></a>802.11终端</h3><blockquote>
-<p>客户端<br>接入点<br>集成服务<br>分布系统<br>无线分布系统</p>
-</blockquote>
-<h3 id="802-11服务集"><a href="#802-11服务集" class="headerlink" title="802.11服务集"></a>802.11服务集</h3><blockquote>
-<p>服务集标识符<br>基本服务集<br>基本服务区<br>基本服务集标识符<br>多个基本服务集标识符<br>扩展服务集<br>独立基本服务集<br>个人基本服务集<br>网状基本服务集<br>Qos基本服务集</p>
-</blockquote>
-<h3 id="802-11配置模式"><a href="#802-11配置模式" class="headerlink" title="802.11配置模式"></a>802.11配置模式</h3><blockquote>
-<p>接入点模式<br>客户端模式</p>
-</blockquote>
-<h4 id="无线广域网（WWAN"><a href="#无线广域网（WWAN" class="headerlink" title="无线广域网（WWAN)"></a>无线广域网（WWAN)</h4><p>覆盖广阔的区域，蜂窝电话技术是其中的代表。<br>Wi-Fi技术和蜂窝技术的融合共存正逐步称为现实。</p>
-<h4 id="无线城域网（WMAN"><a href="#无线城域网（WMAN" class="headerlink" title="无线城域网（WMAN)"></a>无线城域网（WMAN)</h4><p>为都市圈提供射频覆盖，基本上已经搁浅。</p>
-<h4 id="无线个域网（WPAN"><a href="#无线个域网（WPAN" class="headerlink" title="无线个域网（WPAN)"></a>无线个域网（WPAN)</h4><p>用户附近各个设备之间的互联。计算机，游戏设备，平板电脑，智能手机等。<br>蓝牙和红外是最常见的无线个域网技术。<br>802.11无线接口用于无线个域网的最佳范例是对等连接技术。</p>
-<h4 id="无线局域网（WLAN"><a href="#无线局域网（WLAN" class="headerlink" title="无线局域网（WLAN)"></a>无线局域网（WLAN)</h4><p>为建筑物和校园环境提供网络连接。<br>802.11技术定义里无线局域网技术。</p>
-<h4 id="802-11终端-1"><a href="#802-11终端-1" class="headerlink" title="802.11终端"></a>802.11终端</h4><p>所有终端通过唯一MAC地址标识。<br>IEEE802.11-2016标准指定了终端在各种802.11拓扑中使用的体系结构服务。下面是MAC子层的3种802.11服务。<br><strong>终端服务</strong>  所有802.11终端（客户端和接入点）均提供以下服务。</p>
-<blockquote>
-<p>身份验证<br>接触身份验证<br>数据机密性<br>MSDU传输<br>动态频率选择(DFS)<br>发射功率控制(TPC)<br>上层计时器同步<br>Qos流量调度<br>无线电测量<br>动态终端启用(DSE)</p>
-</blockquote>
-<p><strong>分布系统服务</strong> 仅有接入点和网状门户使用分布系统服务(DSS),用于管理客户端关联，重关联，取消关联等。</p>
-<p><strong>PBSS控制点服务</strong> 专门为构成个人基本服务集的802.11ad无线接口而定义。</p>
-<p><strong>客户端</strong><br>与接入点相对的一种工作模式。计算机，平板电脑，智能手机等许多设备都能使用客户端无线接口，接入接入点后访问网络。</p>
-<p><strong>接入点</strong><br>接入点与客户端在功能上完全相同，关键的区别在门户功能。<br>门户功能 又称 分布系统接入功能（DSAF），允许关联到接入点的客户端经由无线介质与其他物理介质交换数据。<br>802.11接入点维护关联客户端的关联表，以定向流量转发。</p>
-<p><strong>集成服务</strong><br>IEEE 802.11-2016定义了集成服务(IS), 通过门户在分布系统与无线局域网之间传输MAC服务数据单位（MSDU)。<br>也就是传输数据帧净荷，即数据内容不变，帧格式转变。</p>
-<p><strong>分布系统</strong><br>接入点通常作为门户，多个接入点之间通常通过以太网连接构成分布系统。<br>多数情况下，有线网是分布系统的最佳选择。</p>
-<p><strong>无线分布系统</strong><br>通过无线回程将接入点连接在一起。<br>不易布线的情况，网状回程网络有时候就是更好的选择。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Wi-Fi</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/02/09/CWNA-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8B%93%E6%89%91/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/02/25/CWNA-%E6%97%A0%E7%BA%BF%E6%94%BB%E5%87%BB%E3%80%81%E5%85%A5%E4%BE%B5%E7%9B%91%E6%8E%A7%E4%B8%8E%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/">展开全文 >></a>
         </p>
       
 
@@ -1274,7 +1191,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1403,11 +1320,23 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">code analysis, Wi-Fi, Driver;</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Wi-Fi</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">git skills</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Shell script</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
               </li>
             
             <div class="clearfix"></div>
@@ -1564,5 +1493,22 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 </body>
 </html>
